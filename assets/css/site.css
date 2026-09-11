@@ -1,1 +1,175 @@
-:root{color-scheme:light;--navy:#1a1c7f;--ink:#172331;--muted:#5d6972;--line:#d8dfe4;--page:#eef2f5;--surface:#fff;--blue:#0097df;--red:#e60012;font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN",Meiryo,system-ui,sans-serif}*{box-sizing:border-box}html{background:var(--page);color:var(--ink)}body{margin:0;min-width:320px;min-height:100vh}.landing{width:min(780px,calc(100% - 32px));margin:auto;padding:clamp(22px,5vw,56px) 0}.site-header{display:flex;align-items:baseline;justify-content:space-between;gap:18px;margin-bottom:clamp(34px,8vw,68px)}.brand{color:var(--navy);font-size:clamp(15px,2vw,18px);font-weight:800;text-decoration:none}.site-header time,.eyebrow,.direction-label,.lead,.site-footer{color:var(--muted)}.site-header time{font-size:13px;white-space:nowrap}.hero{margin-bottom:clamp(28px,5vw,44px)}.eyebrow,.direction-label{margin:0;font-size:13px;font-weight:700;letter-spacing:.08em}.hero h1{margin:8px 0;font-size:clamp(32px,6vw,50px);line-height:1.1}.lead{margin:0;font-size:16px;line-height:1.7}.direction-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.direction-card{overflow:hidden;border:1px solid var(--line);border-radius:18px;background:var(--surface);box-shadow:0 10px 28px rgb(23 35 49/7%)}.direction-header{padding:22px;border-bottom:1px solid var(--line)}.direction-header h2{margin:8px 0 0;font-size:clamp(20px,3vw,27px)}.direction-header h2 span,.link-arrow{color:var(--navy)}.format-list{display:grid;gap:10px;padding:16px}.format-link{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:66px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;color:var(--ink);text-decoration:none}.format-link:hover{border-color:var(--navy)}.format-link>span:first-child{display:flex;align-items:baseline;gap:10px}.format-link strong{font-size:17px}.format-link[data-format="html"] strong{color:var(--blue)}.format-link[data-format="pdf"] strong{color:var(--red)}.format-link small{color:var(--muted);font-size:14px}.site-footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-size:13px;line-height:1.7}.site-footer p{margin:0}@media(max-width:640px){.landing{width:calc(100% - 24px)}.direction-grid{grid-template-columns:1fr}.site-header{align-items:flex-start}.format-link small{font-size:13px}}
+:root{
+  color-scheme:light;
+  --navy:#171a67;
+  --ink:#15202b;
+  --muted:#6f7880;
+  --line:#e3e7ea;
+  --page:#fbfcfd;
+  --surface:#fff;
+  --surface-soft:#fafbfc;
+  --red:#d81424;
+  font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN",Meiryo,system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{background:var(--page);color:var(--ink)}
+body{margin:0;min-width:320px;min-height:100vh;background:var(--page)}
+a{color:inherit}
+.landing{
+  display:flex;
+  width:min(980px,calc(100% - 40px));
+  margin:auto;
+  padding:22px 0 22px;
+  flex-direction:column
+}
+.site-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:18px
+}
+.brand{
+  color:var(--navy);
+  font-size:clamp(24px,3.4vw,34px);
+  font-weight:850;
+  letter-spacing:-.02em;
+  line-height:1.15;
+  text-decoration:none
+}
+.revision-badge{
+  padding:7px 10px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:var(--surface);
+  color:var(--muted);
+  font-size:12px;
+  white-space:nowrap
+}
+.direction-split{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  min-height:360px;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line)
+}
+.direction-panel{
+  display:grid;
+  min-width:0;
+  grid-template-rows:minmax(0,1fr) auto
+}
+.direction-panel+.direction-panel{border-left:1px solid var(--line)}
+.direction-main{
+  display:flex;
+  min-width:0;
+  padding:28px 24px;
+  flex-direction:column;
+  align-items:center;
+  justify-content:space-evenly;
+  gap:0;
+  text-align:center;
+  text-decoration:none
+}
+.direction-main:hover{background:var(--surface)}
+.route-visual{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  min-width:0
+}
+.place{
+  font-size:clamp(23px,3vw,32px);
+  font-weight:850;
+  letter-spacing:-.03em;
+  white-space:nowrap
+}
+.route-arrow{
+  flex:0 0 auto;
+  color:var(--navy);
+  font-size:28px;
+  font-weight:750;
+  line-height:1
+}
+.direction-action{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  color:var(--navy);
+  font-size:14px;
+  font-weight:800
+}
+.direction-action b{font-size:19px}
+.pdf-link{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:9px;
+  min-height:64px;
+  padding:14px 20px;
+  border-top:1px solid var(--line);
+  background:var(--surface-soft);
+  text-decoration:none
+}
+.pdf-link span{font-size:14px;font-weight:800}
+.pdf-link small{color:#8a9298;font-size:12px}
+.pdf-link b{color:#8a9298;font-size:15px}
+.pdf-link:hover span{color:var(--red)}
+.site-footer{
+  margin-top:16px;
+  padding-top:11px;
+  border-top:1px solid var(--line);
+  color:#8a9298;
+  font-size:11px;
+  line-height:1.6
+}
+.site-footer p{margin:0}
+a:focus-visible{outline:3px solid rgb(23 26 103 / 24%);outline-offset:3px}
+
+@media(max-width:700px){
+  .landing{
+    width:calc(100% - 24px);
+    min-height:100svh;
+    padding:18px 0 16px
+  }
+  .site-header{margin-bottom:14px}
+  .brand{font-size:24px}
+  .revision-badge{font-size:10px}
+  .direction-split{
+    flex:1 1 auto;
+    grid-template-columns:1fr;
+    grid-template-rows:repeat(2,minmax(0,1fr));
+    min-height:0
+  }
+  .direction-panel+.direction-panel{
+    border-top:1px solid var(--line);
+    border-left:0
+  }
+  .direction-main{
+    padding:12px 10px;
+    justify-content:space-evenly;
+    gap:0
+  }
+  .route-visual{gap:8px}
+  .place{font-size:clamp(24px,7vw,31px)}
+  .route-arrow{font-size:26px}
+  .direction-action{font-size:14px}
+  .direction-action b{font-size:18px}
+  .pdf-link{
+    min-height:78px;
+    padding:16px 20px
+  }
+  .pdf-link span{font-size:16px}
+  .pdf-link small{font-size:12px}
+  .pdf-link b{font-size:18px}
+  .site-footer{margin-top:12px;padding-top:9px;font-size:10px}
+}
+@media(max-width:420px){
+  .landing{width:calc(100% - 20px)}
+  .brand{font-size:22px}
+  .route-visual{gap:6px}
+  .place{font-size:24px}
+  .route-arrow{font-size:24px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{scroll-behavior:auto!important;transition:none!important}
+}
