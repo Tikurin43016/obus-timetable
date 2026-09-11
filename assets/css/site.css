@@ -1,1 +1,61 @@
-:root{color-scheme:light;--navy:#1a1c7f;--ink:#172331;--muted:#5d6972;--line:#d8dfe4;--page:#eef2f5;--surface:#fff;--blue:#0097df;--red:#e60012;font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN",Meiryo,system-ui,sans-serif}*{box-sizing:border-box}html{background:var(--page);color:var(--ink)}body{margin:0;min-width:320px;min-height:100vh}.landing{width:min(780px,calc(100% - 32px));margin:auto;padding:clamp(22px,5vw,56px) 0}.site-header{display:flex;align-items:baseline;justify-content:space-between;gap:18px;margin-bottom:clamp(34px,8vw,68px)}.brand{color:var(--navy);font-size:clamp(15px,2vw,18px);font-weight:800;text-decoration:none}.site-header time,.eyebrow,.direction-label,.lead,.site-footer{color:var(--muted)}.site-header time{font-size:13px;white-space:nowrap}.hero{margin-bottom:clamp(28px,5vw,44px)}.eyebrow,.direction-label{margin:0;font-size:13px;font-weight:700;letter-spacing:.08em}.hero h1{margin:8px 0;font-size:clamp(32px,6vw,50px);line-height:1.1}.lead{margin:0;font-size:16px;line-height:1.7}.direction-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.direction-card{overflow:hidden;border:1px solid var(--line);border-radius:18px;background:var(--surface);box-shadow:0 10px 28px rgb(23 35 49/7%)}.direction-header{padding:22px;border-bottom:1px solid var(--line)}.direction-header h2{margin:8px 0 0;font-size:clamp(20px,3vw,27px)}.direction-header h2 span,.link-arrow{color:var(--navy)}.format-list{display:grid;gap:10px;padding:16px}.format-link{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:66px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;color:var(--ink);text-decoration:none}.format-link:hover{border-color:var(--navy)}.format-link>span:first-child{display:flex;align-items:baseline;gap:10px}.format-link strong{font-size:17px}.format-link[data-format="html"] strong{color:var(--blue)}.format-link[data-format="pdf"] strong{color:var(--red)}.format-link small{color:var(--muted);font-size:14px}.site-footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-size:13px;line-height:1.7}.site-footer p{margin:0}@media(max-width:640px){.landing{width:calc(100% - 24px)}.direction-grid{grid-template-columns:1fr}.site-header{align-items:flex-start}.format-link small{font-size:13px}}
+:root{
+  color-scheme:light;
+  --navy:#171a67;
+  --navy-2:#24298d;
+  --ink:#15202b;
+  --muted:#66717a;
+  --line:#dce2e7;
+  --page:#f4f6f8;
+  --surface:#fff;
+  --surface-soft:#f8fafb;
+  --blue:#007fb8;
+  --red:#d81424;
+  --shadow:0 16px 40px rgb(21 32 43 / 8%);
+  font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN",Meiryo,system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{background:var(--page);color:var(--ink)}
+body{margin:0;min-width:320px;min-height:100vh}
+a{color:inherit}
+.landing{width:min(900px,calc(100% - 40px));margin:auto;padding:28px 0 48px}
+.site-header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:clamp(48px,9vw,88px)}
+.brand{color:var(--navy);font-size:clamp(16px,2vw,19px);font-weight:850;letter-spacing:.01em;text-decoration:none}
+.revision-badge{padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--muted);font-size:12px;white-space:nowrap}
+.hero{max-width:700px;margin-bottom:clamp(32px,5vw,48px)}
+.eyebrow{margin:0 0 10px;color:var(--navy);font-size:13px;font-weight:800;letter-spacing:.1em}
+.hero h1{margin:0;color:#111827;font-size:clamp(38px,7vw,66px);font-weight:850;letter-spacing:-.035em;line-height:1.08}
+.lead{margin:18px 0 0;color:var(--muted);font-size:clamp(14px,2vw,17px);line-height:1.8}
+.direction-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.direction-card{overflow:hidden;border:1px solid var(--line);border-radius:22px;background:var(--surface);box-shadow:var(--shadow);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.direction-card:hover{transform:translateY(-2px);border-color:#c9d1d8;box-shadow:0 20px 48px rgb(21 32 43 / 12%)}
+.direction-main{display:flex;min-height:250px;flex-direction:column;padding:26px;text-decoration:none}
+.direction-kicker{color:var(--muted);font-size:12px;font-weight:800;letter-spacing:.1em}
+.route-visual{display:grid;grid-template-columns:auto minmax(62px,1fr) auto;align-items:center;gap:12px;margin:auto 0}
+.place{font-size:clamp(20px,3.4vw,30px);font-weight:850;letter-spacing:-.02em;white-space:nowrap}
+.route-line{display:flex;align-items:center;gap:6px;color:var(--navy)}
+.route-line span{height:2px;flex:1;background:currentColor}
+.route-line b{font-size:22px}
+.direction-action{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:18px;border-top:1px solid var(--line);color:var(--navy);font-size:14px;font-weight:800}
+.direction-action b{font-size:20px}
+.pdf-link{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:15px 26px;border-top:1px solid var(--line);background:var(--surface-soft);text-decoration:none}
+.pdf-link span{font-size:13px;font-weight:800}
+.pdf-link small{color:var(--muted);font-size:12px}
+.pdf-link b{color:var(--muted);font-size:15px}
+.pdf-link:hover span{color:var(--red)}
+.site-note{display:flex;gap:8px 14px;align-items:baseline;flex-wrap:wrap;margin-top:24px;padding:15px 18px;border:1px solid #dce6ef;border-radius:14px;background:#f5f9fc;color:#3f4c57;font-size:12px;line-height:1.7}
+.site-note strong{color:#263745}
+.site-footer{margin-top:38px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:12px;line-height:1.7}
+.site-footer p{margin:0}
+a:focus-visible{outline:3px solid rgb(23 26 103 / 28%);outline-offset:3px}
+@media(max-width:700px){
+  .landing{width:calc(100% - 24px);padding-top:18px}
+  .site-header{align-items:flex-start;margin-bottom:42px}
+  .revision-badge{font-size:11px}
+  .hero h1 br{display:none}
+  .direction-grid{grid-template-columns:1fr}
+  .direction-main{min-height:210px;padding:22px}
+  .pdf-link{padding:14px 22px}
+  .route-visual{margin:30px 0}
+  .place{font-size:24px}
+}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
