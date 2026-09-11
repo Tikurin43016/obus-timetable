@@ -120,12 +120,14 @@ a{color:inherit}
 .hour-row+.hour-row{border-top:1px solid var(--line)}
 .hour{
   display:flex;
-  align-items:center;
+  align-items:flex-end;
   justify-content:center;
   border-right:1px solid var(--line);
   background:#fafbfc;
+  padding-bottom:4px;
   font-size:20px;
   font-weight:850;
+  line-height:1;
   font-variant-numeric:tabular-nums
 }
 
@@ -255,7 +257,7 @@ a:focus-visible{outline:3px solid rgb(23 26 103 / 28%);outline-offset:3px}
   .timetable{border-radius:8px}
   .hour-row{grid-template-columns:44px minmax(0,1fr);min-height:31px}
   .hour-row.has-stop-row{min-height:38px}
-  .hour{font-size:18px}
+  .hour{padding-bottom:3px;font-size:18px}
   .trips{gap:1px 11px;padding:1px 7px}
   .trip{min-width:40px;height:23px}
   .trip.has-stop{grid-template-rows:11px 21px;height:32px}
