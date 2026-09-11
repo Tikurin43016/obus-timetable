@@ -15,7 +15,14 @@
 html{background:var(--page);color:var(--ink)}
 body{margin:0;min-width:320px;min-height:100vh;background:var(--page)}
 a{color:inherit}
-.landing{width:min(980px,calc(100% - 40px));margin:auto;padding:22px 0 40px}
+.landing{
+  display:flex;
+  width:min(980px,calc(100% - 40px));
+  min-height:100svh;
+  margin:auto;
+  padding:22px 0 26px;
+  flex-direction:column
+}
 .site-header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px}
 .brand{
   color:var(--navy);
@@ -27,6 +34,10 @@ a{color:inherit}
 }
 .revision-badge{padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--muted);font-size:12px;white-space:nowrap}
 .direction-list{
+  display:grid;
+  flex:1 1 auto;
+  grid-template-rows:repeat(2,minmax(0,1fr));
+  min-height:360px;
   border-top:1px solid var(--line);
   border-bottom:1px solid var(--line)
 }
@@ -40,9 +51,9 @@ a{color:inherit}
   display:grid;
   grid-template-columns:minmax(0,1fr) auto;
   align-items:center;
-  gap:18px;
-  min-height:86px;
-  padding:14px 16px;
+  gap:24px;
+  min-height:0;
+  padding:24px 20px;
   text-decoration:none
 }
 .direction-main:hover{background:var(--surface)}
@@ -80,18 +91,19 @@ a{color:inherit}
 }
 .pdf-link b{font-size:13px}
 .pdf-link:hover{background:var(--surface);color:var(--red)}
-.site-footer{margin-top:34px;padding-top:15px;border-top:1px solid var(--line);color:#8a9298;font-size:11px;line-height:1.7}
+.site-footer{margin-top:18px;padding-top:12px;border-top:1px solid var(--line);color:#8a9298;font-size:11px;line-height:1.7}
 .site-footer p{margin:0}
 a:focus-visible{outline:3px solid rgb(23 26 103 / 24%);outline-offset:3px}
 @media(max-width:700px){
-  .landing{width:calc(100% - 24px);padding-top:18px}
+  .landing{width:calc(100% - 24px);min-height:100svh;padding:18px 0 18px}
   .site-header{align-items:center;margin-bottom:20px}
   .brand{font-size:24px}
   .revision-badge{font-size:10px}
+  .direction-list{min-height:0}
   .direction-main{
-    gap:10px;
-    min-height:72px;
-    padding:11px 10px
+    gap:12px;
+    min-height:0;
+    padding:18px 10px
   }
   .route-visual{gap:5px}
   .place{font-size:19px}
