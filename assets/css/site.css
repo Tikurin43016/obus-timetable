@@ -17,7 +17,6 @@ a{color:inherit}
 .landing{
   display:flex;
   width:min(980px,calc(100% - 40px));
-  min-height:100svh;
   margin:auto;
   padding:22px 0 22px;
   flex-direction:column
@@ -48,9 +47,8 @@ a{color:inherit}
 }
 .direction-split{
   display:grid;
-  flex:1 1 auto;
   grid-template-columns:repeat(2,minmax(0,1fr));
-  min-height:420px;
+  min-height:360px;
   border-top:1px solid var(--line);
   border-bottom:1px solid var(--line)
 }
@@ -137,6 +135,7 @@ a:focus-visible{outline:3px solid rgb(23 26 103 / 24%);outline-offset:3px}
   .brand{font-size:24px}
   .revision-badge{font-size:10px}
   .direction-split{
+    flex:1 1 auto;
     grid-template-columns:1fr;
     grid-template-rows:repeat(2,minmax(0,1fr));
     min-height:0
