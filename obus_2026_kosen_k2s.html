@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#1a1c7f">
+  <meta name="theme-color" content="#171a67">
   <meta name="description" content="小山高専から小山駅東口へ向かう、おーバス高専時刻表。">
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./assets/css/timetable.css">
@@ -12,21 +12,40 @@
 </head>
 <body data-direction="K2S">
   <main class="timetable-shell">
+    <header class="topbar">
+      <a class="brand-link" href="./">おーバス 高専時刻表</a>
+      <span class="revision-badge"><time datetime="2026-10-01">2026年10月1日改正</time></span>
+    </header>
+
+    <nav class="direction-switch" aria-label="方向を切り替える">
+      <a href="./obus_2026_kosen_s2k.html">駅 → 高専</a>
+      <a href="./obus_2026_kosen_k2s.html" aria-current="page">高専 → 駅</a>
+    </nav>
+
     <header class="page-header">
       <div>
-        <a class="back-link" href="./">← 時刻表選択</a>
-        <p class="site-name">おーバス 高専時刻表</p>
+        <p class="page-label">高専から駅</p>
         <h1>高専 <span aria-hidden="true">→</span> 小山駅東口</h1>
       </div>
-      <time datetime="2026-10-01">2026年10月1日改正</time>
+      <div class="page-actions">
+        <a class="action-link" href="./obus_2026_kosen_k2s.pdf">PDF版 ↗</a>
+      </div>
     </header>
+
+    <aside class="trip-note">
+      <strong>出発目安</strong>
+      <span>表示時刻は高専正門を基準に、各乗車停留所までの徒歩時間を差し引いた目安です。</span>
+    </aside>
+
     <section class="schedule" aria-labelledby="schedule-heading">
       <h2 class="visually-hidden" id="schedule-heading">高専から小山駅東口方面の時刻表</h2>
       <div id="timetable" class="timetable" aria-live="polite">
         <p class="status-message">時刻表を読み込んでいます…</p>
       </div>
     </section>
+
     <section id="legend" class="legend" aria-label="凡例"></section>
+
     <footer class="page-footer">
       <p>小山市の公式時刻表をもとに作成した、小山高専向けの非公式時刻表です。</p>
     </footer>
