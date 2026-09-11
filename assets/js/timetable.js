@@ -1,8 +1,5 @@
 const DATA_URL="./obus_2026_kosen.json";
-const DIRECTION_CONFIG={
-  S2K:{stopLabels:{gate:"正門",entrance:"入口",nakakuki2:"中二"}},
-  K2S:{stopLabels:{gate:"正門",entrance:"入口",nakakuki2:"中二"}}
-};
+const STOP_LABELS={gate:"正門",entrance:"入口",nakakuki2:"中二"};
 const CALENDAR_MARKS={daily:"",joto_weekday:"※",kuwa_mon_fri:"◆"};
 const CALENDAR_DESCRIPTIONS={
   joto_weekday:"※ 平日のみ",
@@ -18,7 +15,7 @@ main().catch(error=>{
 });
 
 async function main(){
-  if(!DIRECTION_CONFIG[direction]) throw new Error("Unknown direction");
+  if(direction!=="S2K"&&direction!=="K2S") throw new Error("Unknown direction");
   const data=await loadData();
   if(!Array.isArray(data.S2K)||!Array.isArray(data.K2S)) throw new Error("Invalid timetable data");
   const trips=data[direction].slice().sort((a,b)=>toMin(a.display_time)-toMin(b.display_time));
@@ -79,7 +76,7 @@ function renderTimetable(data,trips){
 
 function createTrip(data,trip){
   const stop=data.stops[trip.college_stop_id];
-  const label=DIRECTION_CONFIG[direction].stopLabels[trip.college_stop_id]??stop?.name??trip.college_stop_id;
+  const label=STOP_LABELS[trip.college_stop_id]??stop?.name??trip.college_stop_id;
   const [,minute]=trip.display_time.split(":");
   const mark=CALENDAR_MARKS[trip.calendar_id]??"";
   const showStop=trip.route_id==="kuwa";
@@ -134,7 +131,7 @@ function renderLegend(data,trips){
     rows.push(
       legendRow(
         "停留所",
-        stopIds.map(id=>legendItem((DIRECTION_CONFIG[direction].stopLabels[id]??id)+"＝"+(data.stops[id]?.name??id)))
+        stopIds.map(id=>legendItem((STOP_LABELS[id]??id)+"＝"+(data.stops[id]?.name??id)))
       )
     );
   }
