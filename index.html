@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1a1c7f">
+  <meta name="description" content="小山高専向けのおーバス時刻表。小山駅東口と高専の往復時刻表をHTMLまたはPDFで確認できます。">
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./assets/css/site.css">
+  <title>おーバス 高専時刻表</title>
+</head>
+<body>
+  <main class="landing">
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="おーバス 高専時刻表 トップ">おーバス 高専時刻表</a>
+      <time datetime="2026-10-01">2026年10月1日改正</time>
+    </header>
+
+    <section class="hero" aria-labelledby="page-title">
+      <p class="eyebrow">小山高専向け</p>
+      <h1 id="page-title">時刻表を選ぶ</h1>
+      <p class="lead">行き先と表示形式を選んでください。</p>
+    </section>
+
+    <nav class="direction-grid" aria-label="時刻表の方向と形式">
+      <article class="direction-card">
+        <header class="direction-header">
+          <p class="direction-label">駅から高専</p>
+          <h2>小山駅東口 <span aria-hidden="true">→</span> 高専</h2>
+        </header>
+        <div class="format-list">
+          <a class="format-link" data-format="html" href="./obus_2026_kosen_s2k.html">
+            <span><strong>HTML</strong><small>スマホ・PCで見る</small></span>
+            <span class="link-arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="format-link" data-format="pdf" href="./obus_2026_kosen_s2k.pdf">
+            <span><strong>PDF</strong><small>印刷・保存用</small></span>
+            <span class="link-arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="direction-card">
+        <header class="direction-header">
+          <p class="direction-label">高専から駅</p>
+          <h2>高専 <span aria-hidden="true">→</span> 小山駅東口</h2>
+        </header>
+        <div class="format-list">
+          <a class="format-link" data-format="html" href="./obus_2026_kosen_k2s.html">
+            <span><strong>HTML</strong><small>スマホ・PCで見る</small></span>
+            <span class="link-arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="format-link" data-format="pdf" href="./obus_2026_kosen_k2s.pdf">
+            <span><strong>PDF</strong><small>印刷・保存用</small></span>
+            <span class="link-arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </article>
+    </nav>
+
+    <footer class="site-footer">
+      <p>小山市の公式時刻表をもとに作成した、小山高専向けの非公式時刻表です。</p>
+    </footer>
+  </main>
+</body>
+</html>
