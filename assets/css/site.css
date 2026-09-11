@@ -156,20 +156,20 @@ a:focus-visible{outline:3px solid rgb(23 26 103 / 24%);outline-offset:3px}
   .direction-action{font-size:14px}
   .direction-action b{font-size:18px}
   .pdf-link{
-    min-height:58px;
-    padding:12px 16px
+    min-height:78px;
+    padding:16px 20px
   }
-  .pdf-link span{font-size:13px}
-  .pdf-link small{font-size:11px}
-  .pdf-link b{font-size:15px}
+  .pdf-link span{font-size:16px}
+  .pdf-link small{font-size:12px}
+  .pdf-link b{font-size:18px}
   .site-footer{margin-top:12px;padding-top:9px;font-size:10px}
 }
 @media(max-width:420px){
   .landing{width:calc(100% - 20px)}
   .brand{font-size:22px}
   .route-visual{gap:6px}
-  .place{font-size:22px}
-  .route-arrow{font-size:22px}
+  .place{font-size:24px}
+  .route-arrow{font-size:24px}
 }
 @media(prefers-reduced-motion:reduce){
   *{scroll-behavior:auto!important;transition:none!important}
