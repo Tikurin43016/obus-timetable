@@ -55,7 +55,9 @@ function renderTimetable(data,trips){
 
   for(const [hour,list] of groups){
     const row=document.createElement("div");
-    row.className="hour-row";
+    row.className=list.some(trip=>trip.route_id==="kuwa")
+      ?"hour-row has-stop-row"
+      :"hour-row";
 
     const hourCell=document.createElement("div");
     hourCell.className="hour";
