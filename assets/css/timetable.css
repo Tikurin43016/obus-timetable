@@ -44,32 +44,43 @@ a{color:inherit}
   white-space:nowrap
 }
 .direction-switch{
+  position:relative;
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:3px;
-  margin-bottom:12px;
-  padding:3px;
-  border:1px solid var(--line);
-  border-radius:11px;
-  background:#eef1f4
+  gap:6px;
+  margin-bottom:10px;
+  padding:0 6px;
+  border-bottom:1px solid var(--line);
+  background:transparent
 }
 .direction-switch a{
+  position:relative;
+  z-index:1;
   display:flex;
   align-items:center;
   justify-content:center;
-  min-height:34px;
-  padding:6px 10px;
-  border-radius:8px;
-  color:#56616a;
+  min-height:35px;
+  margin-bottom:-1px;
+  padding:7px 12px 6px;
+  border:1px solid transparent;
+  border-bottom:0;
+  border-radius:11px 11px 0 0;
+  color:#6b737b;
+  background:transparent;
   font-size:12px;
   font-weight:800;
   text-align:center;
   text-decoration:none
 }
+.direction-switch a:hover{
+  background:#f4f6f8;
+  color:#424b53
+}
 .direction-switch a[aria-current="page"]{
+  z-index:2;
+  border-color:var(--line);
   background:var(--surface);
-  color:var(--navy);
-  box-shadow:0 1px 5px rgb(17 24 39 / 7%)
+  color:var(--navy)
 }
 .page-header{
   display:grid;
@@ -77,13 +88,6 @@ a{color:inherit}
   align-items:end;
   gap:12px;
   margin-bottom:10px
-}
-.page-label{
-  margin:0 0 2px;
-  color:var(--muted);
-  font-size:10px;
-  font-weight:800;
-  letter-spacing:.06em
 }
 .page-header h1{
   margin:0;
@@ -245,12 +249,19 @@ a:focus-visible{outline:3px solid rgb(23 26 103 / 28%);outline-offset:3px}
   .revision-badge{font-size:9px}
   .direction-switch{
     position:sticky;
-    top:4px;
+    top:0;
     z-index:20;
-    margin:0 0 10px;
-    box-shadow:0 4px 12px rgb(17 24 39 / 8%)
+    margin:0 0 8px;
+    padding:0 4px;
+    background:var(--surface);
+    box-shadow:0 5px 10px rgb(17 24 39 / 5%)
   }
-  .direction-switch a{min-height:32px;padding:5px 8px;font-size:11px}
+  .direction-switch a{
+    min-height:31px;
+    padding:6px 8px 5px;
+    border-radius:10px 10px 0 0;
+    font-size:11px
+  }
   .page-header{
     grid-template-columns:minmax(0,1fr) auto;
     gap:8px;
@@ -258,7 +269,6 @@ a:focus-visible{outline:3px solid rgb(23 26 103 / 28%);outline-offset:3px}
     padding:0 2px
   }
   .page-header h1{font-size:28px}
-  .page-label{font-size:9px}
   .action-link{min-height:30px;padding:5px 8px;font-size:10px}
   .timetable{border-radius:8px}
   .hour-row{grid-template-columns:44px minmax(0,1fr);min-height:27px}
