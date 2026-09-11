@@ -251,7 +251,7 @@ a:focus-visible{outline:3px solid rgb(23 26 103 / 28%);outline-offset:3px}
     position:sticky;
     top:0;
     z-index:20;
-    margin:0 0 8px;
+    margin:0 0 12px;
     padding:0 4px;
     background:var(--surface);
     box-shadow:0 5px 10px rgb(17 24 39 / 5%)
@@ -264,10 +264,11 @@ a:focus-visible{outline:3px solid rgb(23 26 103 / 28%);outline-offset:3px}
   }
   .page-header{
     grid-template-columns:minmax(0,1fr) auto;
-    gap:8px;
+    gap:10px;
     margin-bottom:8px;
     padding:0 2px
   }
+  .page-actions{padding-top:2px}
   .page-header h1{font-size:28px}
   .action-link{min-height:30px;padding:5px 8px;font-size:10px}
   .timetable{border-radius:8px}
