@@ -116,6 +116,10 @@ a{color:inherit}
   background:var(--surface)
 }
 .hour-row.has-stop-row{min-height:42px}
+.hour-row:not(.has-stop-row) .trips{align-items:center}
+.hour-row:not(.has-stop-row) .trip{align-items:center}
+.hour-row:not(.has-stop-row) .trip-time{align-self:center}
+.hour-row:not(.has-stop-row) .hour{align-items:center;padding-bottom:0}
 .hour-row:nth-child(even){background:#fcfdfe}
 .hour-row+.hour-row{border-top:1px solid var(--line)}
 .hour{
@@ -257,7 +261,7 @@ a:focus-visible{outline:3px solid rgb(23 26 103 / 28%);outline-offset:3px}
   .page-label{font-size:9px}
   .action-link{min-height:30px;padding:5px 8px;font-size:10px}
   .timetable{border-radius:8px}
-  .hour-row{grid-template-columns:44px minmax(0,1fr);min-height:31px}
+  .hour-row{grid-template-columns:44px minmax(0,1fr);min-height:27px}
   .hour-row.has-stop-row{min-height:38px}
   .hour{padding-bottom:1px;font-size:18px}
   .trips{grid-template-columns:repeat(5,minmax(0,1fr));row-gap:1px;padding:1px 7px}
