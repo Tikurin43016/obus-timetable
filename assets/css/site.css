@@ -66,8 +66,8 @@ a{color:inherit}
   padding:28px 24px;
   flex-direction:column;
   align-items:center;
-  justify-content:center;
-  gap:22px;
+  justify-content:space-evenly;
+  gap:0;
   text-align:center;
   text-decoration:none
 }
@@ -146,8 +146,9 @@ a:focus-visible{outline:3px solid rgb(23 26 103 / 24%);outline-offset:3px}
     border-left:0
   }
   .direction-main{
-    padding:20px 10px;
-    gap:16px
+    padding:10px;
+    justify-content:space-evenly;
+    gap:0
   }
   .route-visual{gap:8px}
   .place{font-size:clamp(21px,6.2vw,27px)}
