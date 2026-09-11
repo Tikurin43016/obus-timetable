@@ -112,9 +112,10 @@ a{color:inherit}
 .hour-row{
   display:grid;
   grid-template-columns:56px minmax(0,1fr);
-  min-height:42px;
+  min-height:34px;
   background:var(--surface)
 }
+.hour-row.has-stop-row{min-height:42px}
 .hour-row:nth-child(even){background:#fcfdfe}
 .hour-row+.hour-row{border-top:1px solid var(--line)}
 .hour{
@@ -252,7 +253,8 @@ a:focus-visible{outline:3px solid rgb(23 26 103 / 28%);outline-offset:3px}
   .page-label{font-size:9px}
   .action-link{min-height:30px;padding:5px 8px;font-size:10px}
   .timetable{border-radius:8px}
-  .hour-row{grid-template-columns:44px minmax(0,1fr);min-height:38px}
+  .hour-row{grid-template-columns:44px minmax(0,1fr);min-height:31px}
+  .hour-row.has-stop-row{min-height:38px}
   .hour{font-size:18px}
   .trips{gap:1px 11px;padding:1px 7px}
   .trip{min-width:40px;height:23px}
