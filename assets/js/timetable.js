@@ -80,22 +80,27 @@ function createTrip(data,trip){
   const label=DIRECTION_CONFIG[direction].stopLabels[trip.college_stop_id]??stop?.name??trip.college_stop_id;
   const [,minute]=trip.display_time.split(":");
   const mark=CALENDAR_MARKS[trip.calendar_id]??"";
+  const showStop=trip.route_id==="kuwa";
 
   const item=document.createElement("div");
-  item.className="trip";
+  item.className=showStop?"trip has-stop":"trip";
   item.dataset.route=trip.route_id;
-  item.dataset.stop=trip.college_stop_id;
   item.setAttribute("role","listitem");
   item.setAttribute(
     "aria-label",
-    [trip.display_time,stop?.name??trip.college_stop_id,CALENDAR_DESCRIPTIONS[trip.calendar_id]??""]
-      .filter(Boolean)
-      .join("、")
+    [
+      trip.display_time,
+      stop?.name??trip.college_stop_id,
+      CALENDAR_DESCRIPTIONS[trip.calendar_id]??""
+    ].filter(Boolean).join("、")
   );
 
-  const destination=document.createElement("span");
-  destination.className="trip-stop";
-  destination.textContent=label;
+  if(showStop){
+    const destination=document.createElement("span");
+    destination.className="trip-stop";
+    destination.textContent=label;
+    item.append(destination);
+  }
 
   const time=document.createElement("span");
   time.className="trip-time";
@@ -107,21 +112,30 @@ function createTrip(data,trip){
     time.append(sup);
   }
 
-  item.append(destination,time);
+  item.append(time);
   return item;
 }
 
 function renderLegend(data,trips){
-  const stopIds=[...new Set(trips.map(trip=>trip.college_stop_id))];
+  const stopIds=[...new Set(
+    trips
+      .filter(trip=>trip.route_id==="kuwa")
+      .map(trip=>trip.college_stop_id)
+  )];
+
   const calendarIds=[...new Set(trips.map(trip=>trip.calendar_id))]
     .filter(id=>CALENDAR_DESCRIPTIONS[id]);
 
-  const rows=[
-    legendRow(
-      "停留所",
-      stopIds.map(id=>legendItem((DIRECTION_CONFIG[direction].stopLabels[id]??id)+" ＝ "+(data.stops[id]?.name??id)))
-    )
-  ];
+  const rows=[];
+
+  if(stopIds.length){
+    rows.push(
+      legendRow(
+        "停留所",
+        stopIds.map(id=>legendItem((DIRECTION_CONFIG[direction].stopLabels[id]??id)+"＝"+(data.stops[id]?.name??id)))
+      )
+    );
+  }
 
   if(calendarIds.length){
     rows.push(
@@ -132,16 +146,14 @@ function renderLegend(data,trips){
     );
   }
 
-  const note=legendRow(
-    "時刻の見方",
-    [legendItem(
-      direction==="K2S"
-        ?"表示時刻は高専正門を基準に、各乗車停留所までの徒歩時間を差し引いた出発目安です。"
-        :"高専側の発着停留所は、各時刻の上に表示しています。"
-    )]
+  rows.push(
+    legendRow(
+      "案内",
+      [legendItem(
+        "高岳線は小山高専入口、城東中久喜線は高専正門を発着。桑東部線は各便の停留所表示をご確認ください。"
+      )]
+    )
   );
-  note.classList.add("legend-wide");
-  rows.push(note);
 
   legendRoot.replaceChildren(...rows);
 }
