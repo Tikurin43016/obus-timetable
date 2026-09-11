@@ -124,7 +124,7 @@ a{color:inherit}
   justify-content:center;
   border-right:1px solid var(--line);
   background:#fafbfc;
-  padding-bottom:4px;
+  padding-bottom:2px;
   font-size:20px;
   font-weight:850;
   line-height:1;
@@ -132,15 +132,17 @@ a{color:inherit}
 }
 
 .trips{
-  display:flex;
-  flex-wrap:wrap;
-  align-items:flex-end;
-  gap:2px 16px;
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  align-items:end;
+  column-gap:0;
+  row-gap:2px;
   padding:2px 12px
 }
 .trip{
   display:flex;
-  min-width:42px;
+  width:100%;
+  min-width:0;
   height:24px;
   align-items:flex-end;
   justify-content:center;
@@ -257,9 +259,9 @@ a:focus-visible{outline:3px solid rgb(23 26 103 / 28%);outline-offset:3px}
   .timetable{border-radius:8px}
   .hour-row{grid-template-columns:44px minmax(0,1fr);min-height:31px}
   .hour-row.has-stop-row{min-height:38px}
-  .hour{padding-bottom:3px;font-size:18px}
-  .trips{gap:1px 11px;padding:1px 7px}
-  .trip{min-width:40px;height:23px}
+  .hour{padding-bottom:1px;font-size:18px}
+  .trips{grid-template-columns:repeat(5,minmax(0,1fr));row-gap:1px;padding:1px 7px}
+  .trip{width:100%;min-width:0;height:23px}
   .trip.has-stop{grid-template-rows:11px 21px;height:32px}
   .trip-stop{font-size:9px}
   .trip-time{font-size:20px}
@@ -268,8 +270,6 @@ a:focus-visible{outline:3px solid rgb(23 26 103 / 28%);outline-offset:3px}
   .page-footer{margin-top:7px;padding-top:6px;font-size:9px}
 }
 @media(max-width:380px){
-  .trips{gap:3px 8px}
-  .trip{min-width:38px}
   .page-header h1{font-size:26px}
 }
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
