@@ -166,7 +166,7 @@ a{color:inherit}
 .board-columns,
 .departure-row{
   display:grid;
-  grid-template-columns:minmax(200px,1fr) minmax(320px,1.75fr) minmax(220px,.9fr);
+  grid-template-columns:minmax(260px,1.2fr) minmax(300px,1.35fr) minmax(220px,1fr);
 }
 
 .board-columns{
@@ -492,7 +492,7 @@ a:focus-visible{
 
   .board-columns,
   .departure-row{
-    grid-template-columns:minmax(128px,.9fr) minmax(0,1.35fr) minmax(112px,.72fr);
+    grid-template-columns:minmax(150px,1.05fr) minmax(0,1.2fr) minmax(120px,.8fr);
   }
 
   .departures{
