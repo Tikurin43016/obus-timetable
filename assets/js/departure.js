@@ -8,8 +8,8 @@ const DESTINATION_DISPLAY={
     secondary:"小山高専入口経由"
   },
   joto:{
-    primary:"高専正門行",
-    secondary:""
+    primary:"小山運動公園行",
+    secondary:"高専正門経由"
   }
 };
 
