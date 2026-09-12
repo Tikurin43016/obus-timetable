@@ -353,19 +353,6 @@ function createDepartureRow(item,now){
 
   stopCell.append(stopName,stopNote);
 
-  const statusCell=document.createElement("div");
-  statusCell.className="departure-cell status-cell";
-
-  const statusMain=document.createElement("span");
-  statusMain.className="status-main";
-  statusMain.textContent=statusText(dayOffset,departureMinutes,now,serviceDate);
-
-  const statusSub=document.createElement("span");
-  statusSub.className="status-sub";
-  statusSub.textContent="時刻表上";
-
-  statusCell.append(statusMain,statusSub);
-
   const timeCell=document.createElement("div");
   timeCell.className="departure-cell time-cell";
 
@@ -381,20 +368,8 @@ function createDepartureRow(item,now){
   time.textContent=trip.display_time;
   timeCell.append(time);
 
-  row.append(routeCell,stopCell,statusCell,timeCell);
+  row.append(routeCell,stopCell,timeCell);
   return row;
-}
-
-function statusText(dayOffset,departureMinutes,now,serviceDate){
-  if(dayOffset===1) return "明日";
-  if(dayOffset>1) return serviceDate.month+"/"+serviceDate.day;
-
-  const currentMinutes=now.hour*60+now.minute;
-  const difference=departureMinutes-currentMinutes;
-
-  if(difference<=0) return "発車時刻";
-  if(difference===1) return "まもなく";
-  return "あと"+difference+"分";
 }
 
 function toMinutes(value){
