@@ -48,6 +48,21 @@
       </div>
     </section>
 
+    <details id="debug-panel" class="debug-panel" hidden>
+      <summary>DEBUG</summary>
+      <div class="debug-controls">
+        <label for="debug-datetime">表示日時</label>
+        <input id="debug-datetime" type="datetime-local" step="60">
+        <div class="debug-buttons">
+          <button id="debug-apply" type="button">適用</button>
+          <button id="debug-minus" type="button">−1分</button>
+          <button id="debug-plus" type="button">＋1分</button>
+          <button id="debug-now" type="button">現在時刻</button>
+        </div>
+        <small>デバッグ中は設定時刻で固定されます。</small>
+      </div>
+    </details>
+
     <footer class="board-footer">
       <span class="notice-label">お知らせ</span>
       <div class="notice-viewport">
