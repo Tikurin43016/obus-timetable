@@ -242,7 +242,7 @@ function renderNotice(now){
 
   if(effective&&current<effective){
     noticeRoot.classList.add("preview");
-    noticeRoot.textContent="プレビュー表示：この発車標は"+formatRevision(effective)+"の時刻表に基づきます。改正日前の実際の運行には使用しないでください。";
+    noticeRoot.textContent="プレビュー表示：この発車標は"+formatRevision(effective)+"の時刻表に基づきます。";
     return;
   }
 
