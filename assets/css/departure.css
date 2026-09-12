@@ -328,6 +328,83 @@ a{color:inherit}
   vertical-align:middle;
 }
 
+.debug-panel{
+  position:fixed;
+  z-index:20;
+  right:14px;
+  bottom:72px;
+  width:min(360px,calc(100vw - 28px));
+  border:1px solid #727884;
+  border-radius:7px;
+  background:rgb(18 21 27 / 96%);
+  color:#fff;
+  box-shadow:0 12px 32px rgb(0 0 0 / 45%);
+}
+
+.debug-panel[hidden]{display:none}
+
+.debug-panel summary{
+  width:max-content;
+  margin-left:auto;
+  padding:8px 11px;
+  cursor:pointer;
+  color:#111;
+  background:#ffd400;
+  border-radius:6px;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.08em;
+  list-style:none;
+}
+
+.debug-panel summary::-webkit-details-marker{display:none}
+
+.debug-controls{
+  display:grid;
+  gap:8px;
+  padding:12px;
+}
+
+.debug-controls label{
+  font-size:12px;
+  font-weight:800;
+}
+
+.debug-controls input{
+  width:100%;
+  padding:8px 9px;
+  border:1px solid #686f7b;
+  border-radius:4px;
+  background:#080a0d;
+  color:#fff;
+  font:inherit;
+  font-variant-numeric:tabular-nums;
+}
+
+.debug-buttons{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:6px;
+}
+
+.debug-buttons button{
+  min-height:34px;
+  border:1px solid #686f7b;
+  border-radius:4px;
+  background:#252a31;
+  color:#fff;
+  cursor:pointer;
+  font-size:11px;
+  font-weight:800;
+}
+
+.debug-buttons button:hover{background:#343a43}
+
+.debug-controls small{
+  color:#aeb4be;
+  font-size:10px;
+}
+
 .board-footer{
   display:grid;
   grid-template-columns:auto minmax(0,1fr) auto;
@@ -464,6 +541,11 @@ a:focus-visible{
   }
 
   .revision-label{display:none}
+
+  .debug-panel{
+    right:10px;
+    bottom:62px;
+  }
 }
 
 @media(max-width:560px){
