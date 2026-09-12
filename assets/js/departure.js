@@ -2,6 +2,17 @@ const DATA_URL="../obus_2026_kosen.json";
 const MAX_ROWS=5;
 const REFRESH_MS=1000;
 
+const DESTINATION_DISPLAY={
+  taka:{
+    primary:"東光高岳北行",
+    secondary:"小山高専入口経由"
+  },
+  joto:{
+    primary:"高専正門行",
+    secondary:""
+  }
+};
+
 const HOLIDAYS=new Set([
   "2026-01-01","2026-01-12","2026-02-11","2026-02-23","2026-03-20",
   "2026-04-29","2026-05-03","2026-05-04","2026-05-05","2026-05-06",
@@ -338,20 +349,22 @@ function createDepartureRow(item,now){
   badge.append(number,name);
   routeCell.append(badge);
 
+  const destination=getDestinationDisplay(trip,stop);
+
   const stopCell=document.createElement("div");
   stopCell.className="departure-cell stop-cell";
 
   const stopName=document.createElement("span");
   stopName.className="stop-name";
-  stopName.textContent=stop.name??trip.college_stop_id;
+  stopName.textContent=destination.primary;
+  stopCell.append(stopName);
 
-  const stopNote=document.createElement("span");
-  stopNote.className="stop-note";
-  stopNote.textContent=stop.walk_minutes>0
-    ?"正門まで徒歩約"+stop.walk_minutes+"分"
-    :"高専正門前";
-
-  stopCell.append(stopName,stopNote);
+  if(destination.secondary){
+    const stopNote=document.createElement("span");
+    stopNote.className="stop-note";
+    stopNote.textContent=destination.secondary;
+    stopCell.append(stopNote);
+  }
 
   const timeCell=document.createElement("div");
   timeCell.className="departure-cell time-cell";
@@ -370,6 +383,21 @@ function createDepartureRow(item,now){
 
   row.append(routeCell,stopCell,timeCell);
   return row;
+}
+
+function getDestinationDisplay(trip,stop){
+  if(trip.route_id==="kuwa"){
+    const direction=trip.loop_direction==="right"?"右回り":"左回り";
+    return {
+      primary:direction,
+      secondary:"高専正門経由"
+    };
+  }
+
+  return DESTINATION_DISPLAY[trip.route_id]??{
+    primary:stop.name??trip.college_stop_id,
+    secondary:""
+  };
 }
 
 function toMinutes(value){
