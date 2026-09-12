@@ -18,7 +18,16 @@ const todayRoot=document.querySelector("#today");
 const departuresRoot=document.querySelector("#departures");
 const noticeRoot=document.querySelector("#notice-text");
 const revisionRoot=document.querySelector("#revision");
+const debugPanel=document.querySelector("#debug-panel");
+const debugDatetime=document.querySelector("#debug-datetime");
+const debugApply=document.querySelector("#debug-apply");
+const debugMinus=document.querySelector("#debug-minus");
+const debugPlus=document.querySelector("#debug-plus");
+const debugNow=document.querySelector("#debug-now");
 
+const params=new URLSearchParams(window.location.search);
+const debugEnabled=params.get("debug")==="1";
+let debugNowParts=null;
 let timetableData=null;
 let sortedTrips=[];
 
@@ -39,6 +48,7 @@ async function main(){
     revisionRoot.textContent=formatRevision(timetableData.effective_from);
   }
 
+  setupDebug();
   update();
   window.setInterval(update,REFRESH_MS);
   document.addEventListener("visibilitychange",()=>{
@@ -60,10 +70,113 @@ async function loadData(){
 }
 
 function update(){
-  const now=getJstParts(new Date());
+  const now=getNowParts();
   renderClock(now);
   renderNotice(now);
   renderDepartures(now);
+}
+
+function getNowParts(){
+  return debugNowParts ? {...debugNowParts} : getJstParts(new Date());
+}
+
+function setupDebug(){
+  if(!debugEnabled) return;
+
+  debugPanel.hidden=false;
+
+  const requested=parseDebugValue(params.get("time"));
+  debugNowParts=requested??getJstParts(new Date());
+  debugDatetime.value=toDebugValue(debugNowParts);
+
+  debugApply.addEventListener("click",()=>{
+    const value=parseDebugValue(debugDatetime.value);
+    if(!value) return;
+    debugNowParts=value;
+    syncDebugUrl();
+    update();
+  });
+
+  debugMinus.addEventListener("click",()=>shiftDebugMinutes(-1));
+  debugPlus.addEventListener("click",()=>shiftDebugMinutes(1));
+
+  debugNow.addEventListener("click",()=>{
+    debugNowParts=getJstParts(new Date());
+    debugDatetime.value=toDebugValue(debugNowParts);
+    syncDebugUrl();
+    update();
+  });
+}
+
+function shiftDebugMinutes(amount){
+  if(!debugNowParts) return;
+  const date=new Date(Date.UTC(
+    debugNowParts.year,
+    debugNowParts.month-1,
+    debugNowParts.day,
+    debugNowParts.hour,
+    debugNowParts.minute+amount,
+    debugNowParts.second??0
+  ));
+  debugNowParts={
+    year:date.getUTCFullYear(),
+    month:date.getUTCMonth()+1,
+    day:date.getUTCDate(),
+    hour:date.getUTCHours(),
+    minute:date.getUTCMinutes(),
+    second:date.getUTCSeconds()
+  };
+  debugDatetime.value=toDebugValue(debugNowParts);
+  syncDebugUrl();
+  update();
+}
+
+function parseDebugValue(value){
+  if(!value) return null;
+  const match=String(value).match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?$/);
+  if(!match) return null;
+
+  const parts={
+    year:Number(match[1]),
+    month:Number(match[2]),
+    day:Number(match[3]),
+    hour:Number(match[4]),
+    minute:Number(match[5]),
+    second:Number(match[6]??0)
+  };
+
+  const check=new Date(Date.UTC(parts.year,parts.month-1,parts.day,parts.hour,parts.minute,parts.second));
+  if(
+    check.getUTCFullYear()!==parts.year||
+    check.getUTCMonth()+1!==parts.month||
+    check.getUTCDate()!==parts.day||
+    check.getUTCHours()!==parts.hour||
+    check.getUTCMinutes()!==parts.minute
+  ) return null;
+
+  return parts;
+}
+
+function toDebugValue(parts){
+  return [
+    String(parts.year).padStart(4,"0"),
+    "-",
+    String(parts.month).padStart(2,"0"),
+    "-",
+    String(parts.day).padStart(2,"0"),
+    "T",
+    String(parts.hour).padStart(2,"0"),
+    ":",
+    String(parts.minute).padStart(2,"0")
+  ].join("");
+}
+
+function syncDebugUrl(){
+  if(!debugEnabled||!debugNowParts) return;
+  const next=new URL(window.location.href);
+  next.searchParams.set("debug","1");
+  next.searchParams.set("time",toDebugValue(debugNowParts));
+  window.history.replaceState(null,"",next);
 }
 
 function getJstParts(date){
