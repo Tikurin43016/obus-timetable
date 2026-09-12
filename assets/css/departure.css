@@ -43,7 +43,7 @@ a{color:inherit}
 
 .board-topbar{
   display:grid;
-  grid-template-columns:minmax(280px,1fr) minmax(340px,1.15fr) minmax(250px,.8fr);
+  grid-template-columns:repeat(3,minmax(0,1fr));
   align-items:stretch;
   min-height:120px;
   border-bottom:3px solid var(--line-strong);
@@ -166,11 +166,11 @@ a{color:inherit}
 .board-columns,
 .departure-row{
   display:grid;
-  grid-template-columns:minmax(260px,1.2fr) minmax(300px,1.35fr) minmax(220px,1fr);
+  grid-template-columns:minmax(300px,1.3fr) minmax(280px,1.15fr) minmax(230px,1fr);
 }
 
 .board-columns{
-  min-height:54px;
+  min-height:70px;
   border-bottom:2px solid var(--line);
   background:#15181d;
 }
@@ -262,14 +262,14 @@ a{color:inherit}
   justify-content:center;
   border-right:2px solid rgb(255 255 255 / 45%);
   background:rgb(0 0 0 / 18%);
-  font-size:clamp(21px,2vw,30px);
+  font-size:clamp(27px,2.5vw,40px);
   font-variant-numeric:tabular-nums;
 }
 
 .route-name{
   min-width:0;
   padding:6px 9px;
-  font-size:clamp(22px,2.25vw,36px);
+  font-size:clamp(27px,2.7vw,44px);
   line-height:1.04;
   text-align:center;
 }
