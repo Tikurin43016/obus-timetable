@@ -269,7 +269,7 @@ a{color:inherit}
 .route-name{
   min-width:0;
   padding:6px 9px;
-  font-size:clamp(18px,1.75vw,28px);
+  font-size:clamp(22px,2.25vw,36px);
   line-height:1.04;
   text-align:center;
 }
@@ -511,7 +511,7 @@ a:focus-visible{
   }
 
   .route-number{font-size:21px}
-  .route-name{font-size:clamp(16px,3.7vw,23px)}
+  .route-name{font-size:clamp(18px,4.2vw,27px)}
   .stop-name{font-size:clamp(20px,4.6vw,30px)}
   .stop-note{font-size:10px}
   .time-cell{font-size:clamp(34px,8vw,48px)}
@@ -553,7 +553,7 @@ a:focus-visible{
   }
 
   .route-number{font-size:18px}
-  .route-name{padding:5px 4px;font-size:14px}
+  .route-name{padding:5px 4px;font-size:16px}
   .stop-name{font-size:18px}
   .stop-note{margin-top:4px;font-size:9px}
   .time-cell{font-size:31px}
