@@ -431,13 +431,21 @@ a{color:inherit}
 }
 
 .notice-viewport p{
+  display:block;
+  width:max-content;
+  min-width:max-content;
   margin:0;
-  overflow:hidden;
   color:var(--yellow);
   font-size:clamp(14px,1.4vw,21px);
   font-weight:800;
-  text-overflow:ellipsis;
   white-space:nowrap;
+  animation:notice-scroll 16s linear infinite;
+  will-change:transform;
+}
+
+@keyframes notice-scroll{
+  from{transform:translateX(100%)}
+  to{transform:translateX(-100%)}
 }
 
 .notice-viewport p.preview{
@@ -568,4 +576,5 @@ a:focus-visible{
 
 @media(prefers-reduced-motion:reduce){
   *{scroll-behavior:auto!important;transition:none!important}
+  .notice-viewport p{animation:none!important;transform:none!important}
 }
