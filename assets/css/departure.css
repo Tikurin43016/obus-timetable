@@ -274,7 +274,7 @@ a{color:inherit}
   justify-content:center;
   border-right:2px solid rgb(255 255 255 / 45%);
   background:rgb(0 0 0 / 18%);
-  font-size:clamp(27px,2.5vw,40px);
+  font-size:clamp(31px,2.8vw,44px);
   font-variant-numeric:tabular-nums;
 }
 
@@ -541,7 +541,7 @@ a:focus-visible{
     grid-template-columns:46px minmax(0,1fr);
   }
 
-  .route-number{font-size:21px}
+  .route-number{font-size:24px}
   .route-name{font-size:clamp(18px,4.2vw,27px)}
   .stop-name{font-size:clamp(20px,4.6vw,30px)}
   .stop-note{font-size:clamp(12px,2.2vw,17px)}
@@ -583,7 +583,7 @@ a:focus-visible{
     grid-template-columns:38px minmax(0,1fr);
   }
 
-  .route-number{font-size:18px}
+  .route-number{font-size:22px}
   .route-name{padding:5px 4px;font-size:16px}
   .stop-name{font-size:18px}
   .stop-note{margin-top:4px;font-size:11px}
