@@ -253,12 +253,12 @@ function renderNotice(now){
 
   if(effective&&current<effective){
     noticeRoot.classList.add("preview");
-    noticeRoot.textContent="プレビュー表示：この発車標は"+formatRevision(effective)+"の時刻表に基づきます。";
+    noticeRoot.textContent="プレビュー表示：この発車標は"+formatRevision(effective)+"の時刻表に基づきます。　Preview: This departure board is based on the timetable revised on "+formatRevisionEnglish(effective)+".";
     return;
   }
 
   noticeRoot.classList.remove("preview");
-  noticeRoot.textContent="この発車標は時刻表上の発車時刻に基づく案内です。実際の運行位置や遅延は反映していません。";
+  noticeRoot.textContent="この発車標は時刻表上の発車時刻に基づく案内です。実際の運行位置や遅延は反映していません。　This departure board is based on scheduled departure times. Real-time vehicle locations and delays are not shown.";
 }
 
 function renderDepartures(now){
@@ -408,6 +408,16 @@ function toMinutes(value){
 function formatRevision(value){
   const [year,month,day]=String(value).split("-").map(Number);
   return year+"年"+month+"月"+day+"日改正";
+}
+
+function formatRevisionEnglish(value){
+  const [year,month,day]=String(value).split("-").map(Number);
+  return new Intl.DateTimeFormat("en-US",{
+    timeZone:"Asia/Tokyo",
+    year:"numeric",
+    month:"long",
+    day:"numeric"
+  }).format(new Date(Date.UTC(year,month-1,day)));
 }
 
 function renderError(message){
