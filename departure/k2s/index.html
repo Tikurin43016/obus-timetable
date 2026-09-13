@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10142f">
+  <meta name="description" content="小山高専から小山駅東口方面へ向かう、おーバスの時刻表連動発車案内。">
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../assets/css/departure.css">
+  <title>小山高専 発車案内｜おーバス 高専時刻表</title>
+  <script defer src="../../assets/js/departure.js"></script>
+</head>
+<body data-direction="K2S" data-data-url="../../obus_2026_kosen.json">
+  <main class="departure-board">
+    <header class="board-topbar">
+      <div class="station-heading">
+        <a class="back-link" href="../../" aria-label="おーバス 高専時刻表トップへ戻る">← 時刻表</a>
+        <div>
+          <h1>小山高専</h1>
+          <p>Oyama KOSEN</p>
+        </div>
+      </div>
+
+      <div class="direction-heading">
+        <strong>小山駅東口方面</strong>
+        <span>専用</span>
+        <small>for Oyama Station East Exit</small>
+      </div>
+
+      <div class="clock-panel" aria-label="現在時刻">
+        <time id="clock" datetime="">--:--:--</time>
+        <span id="today">----/--/--</span>
+      </div>
+    </header>
+
+    <section class="board-panel" aria-labelledby="board-heading">
+      <h2 id="board-heading" class="visually-hidden">小山駅東口方面の次の便</h2>
+
+      <div class="board-columns" aria-hidden="true">
+        <span>路線 <small>Route</small></span>
+        <span>乗車場所 <small>Boarding Stop</small></span>
+        <span>正門出発目安 <small>Leave Gate</small></span>
+      </div>
+
+      <div id="departures" class="departures" aria-live="polite">
+        <div class="loading-message">発車時刻を読み込んでいます…</div>
+      </div>
+    </section>
+
+    <details id="debug-panel" class="debug-panel" hidden>
+      <summary>DEBUG</summary>
+      <div class="debug-controls">
+        <label for="debug-datetime">表示日時</label>
+        <input id="debug-datetime" type="datetime-local" step="60">
+        <div class="debug-buttons">
+          <button id="debug-apply" type="button">適用</button>
+          <button id="debug-minus" type="button">−1分</button>
+          <button id="debug-plus" type="button">＋1分</button>
+          <button id="debug-now" type="button">現在時刻</button>
+        </div>
+        <small>デバッグ中は設定時刻で固定されます。</small>
+      </div>
+    </details>
+
+    <footer class="board-footer">
+      <span class="notice-label">お知らせ</span>
+      <div class="notice-viewport">
+        <div id="notice-track" class="notice-track">
+          <span id="notice-text" class="notice-copy">正門出発目安は各停留所の時刻と徒歩時間から算出した参考時刻です。</span>
+          <span id="notice-text-copy" class="notice-copy" aria-hidden="true">正門出発目安は各停留所の時刻と徒歩時間から算出した参考時刻です。</span>
+        </div>
+      </div>
+      <span id="revision" class="revision-label">2026年10月1日改正</span>
+    </footer>
+  </main>
+</body>
+</html>
