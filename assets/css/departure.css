@@ -538,7 +538,7 @@ a:focus-visible{
 
   .route-badge{
     min-height:56px;
-    grid-template-columns:52px minmax(0,1fr);
+    grid-template-columns:38px minmax(0,1fr);
   }
 
   .route-number{font-size:29px}
