@@ -430,26 +430,33 @@ a{color:inherit}
   padding:0 18px;
 }
 
-.notice-viewport p{
-  display:block;
+.notice-track{
+  --notice-gap:48px;
+  --notice-half-gap:24px;
+  --notice-duration:24s;
+  display:flex;
   width:max-content;
-  min-width:max-content;
-  margin:0;
+  align-items:center;
+  gap:var(--notice-gap);
+  animation:notice-scroll var(--notice-duration) linear infinite;
+  will-change:transform;
+}
+
+.notice-copy{
+  flex:0 0 auto;
   color:var(--yellow);
   font-size:clamp(17px,1.65vw,25px);
   font-weight:800;
   white-space:nowrap;
-  animation:notice-scroll 16s linear infinite;
-  will-change:transform;
+}
+
+.notice-track.preview .notice-copy{
+  color:#ffb847;
 }
 
 @keyframes notice-scroll{
-  from{transform:translateX(100%)}
-  to{transform:translateX(-100%)}
-}
-
-.notice-viewport p.preview{
-  color:#ffb847;
+  from{transform:translateX(0)}
+  to{transform:translateX(calc(-50% - var(--notice-half-gap)))}
 }
 
 .visually-hidden{
@@ -571,10 +578,12 @@ a:focus-visible{
   .notice-label{display:none}
   .board-footer{grid-template-columns:1fr;min-height:48px}
   .notice-viewport{padding:0 12px}
-  .notice-viewport p{font-size:14px}
+  .notice-track{--notice-gap:36px;--notice-half-gap:18px}
+  .notice-copy{font-size:14px}
 }
 
 @media(prefers-reduced-motion:reduce){
   *{scroll-behavior:auto!important;transition:none!important}
-  .notice-viewport p{animation:none!important;transform:none!important}
+  .notice-track{animation:none!important;transform:none!important}
+  .notice-copy[aria-hidden="true"]{display:none}
 }
