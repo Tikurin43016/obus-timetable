@@ -28,6 +28,8 @@ const clockRoot=document.querySelector("#clock");
 const todayRoot=document.querySelector("#today");
 const departuresRoot=document.querySelector("#departures");
 const noticeRoot=document.querySelector("#notice-text");
+const noticeCopy=document.querySelector("#notice-text-copy");
+const noticeTrack=document.querySelector("#notice-track");
 const revisionRoot=document.querySelector("#revision");
 const debugPanel=document.querySelector("#debug-panel");
 const debugDatetime=document.querySelector("#debug-datetime");
@@ -65,6 +67,8 @@ async function main(){
   document.addEventListener("visibilitychange",()=>{
     if(!document.hidden) update();
   });
+  window.addEventListener("resize",updateNoticeSpeed);
+  updateNoticeSpeed();
 }
 
 async function loadData(){
@@ -256,11 +260,24 @@ function renderNotice(now){
     ?"プレビュー表示：この発車標は"+formatRevision(effective)+"の時刻表に基づきます。　Preview: This departure board is based on the timetable revised on "+formatRevisionEnglish(effective)+"."
     :"この発車標は時刻表上の発車時刻に基づく案内です。実際の運行位置や遅延は反映していません。　This departure board is based on scheduled departure times. Real-time vehicle locations and delays are not shown.";
 
-  noticeRoot.classList.toggle("preview",isPreview);
+  noticeTrack.classList.toggle("preview",isPreview);
 
   if(noticeRoot.textContent!==text){
     noticeRoot.textContent=text;
+    noticeCopy.textContent=text;
+    updateNoticeSpeed();
   }
+}
+
+function updateNoticeSpeed(){
+  window.requestAnimationFrame(()=>{
+    const copyWidth=noticeRoot.getBoundingClientRect().width;
+    const styles=getComputedStyle(noticeTrack);
+    const gap=parseFloat(styles.columnGap)||48;
+    const pixelsPerSecond=42;
+    const duration=Math.max(12,(copyWidth+gap)/pixelsPerSecond);
+    noticeTrack.style.setProperty("--notice-duration",duration.toFixed(2)+"s");
+  });
 }
 
 function renderDepartures(now){
