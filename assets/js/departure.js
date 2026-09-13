@@ -1,4 +1,5 @@
-const DATA_URL="../obus_2026_kosen.json";
+const DATA_URL=document.body.dataset.dataUrl??"../obus_2026_kosen.json";
+const direction=document.body.dataset.direction==="K2S"?"K2S":"S2K";
 const MAX_ROWS=5;
 const REFRESH_MS=1000;
 
@@ -51,9 +52,9 @@ main().catch(error=>{
 
 async function main(){
   timetableData=await loadData();
-  if(!Array.isArray(timetableData.S2K)) throw new Error("Invalid timetable data");
+  if(!Array.isArray(timetableData[direction])) throw new Error("Invalid timetable data");
 
-  sortedTrips=timetableData.S2K
+  sortedTrips=timetableData[direction]
     .slice()
     .sort((a,b)=>toMinutes(a.display_time)-toMinutes(b.display_time));
 
@@ -256,9 +257,13 @@ function renderNotice(now){
   const effective=timetableData?.effective_from;
   const isPreview=Boolean(effective&&current<effective);
 
+  const normalText=direction==="K2S"
+    ?"正門出発目安は各停留所の時刻と徒歩時間から算出した参考時刻です。　Gate departure times are estimates including walking time."
+    :"時刻表に基づく案内です。実際の運行状況は反映していません。　Based on the timetable. Real-time service information is not shown.";
+
   const text=isPreview
     ?"プレビュー表示："+formatRevision(effective)+"の時刻表に基づきます。　Preview: Based on the timetable revised on "+formatRevisionEnglish(effective)+"."
-    :"時刻表に基づく案内です。実際の運行状況は反映していません。　Based on the timetable. Real-time service information is not shown."
+    :normalText;
 
   noticeTrack.classList.toggle("preview",isPreview);
 
@@ -368,20 +373,20 @@ function createDepartureRow(item,now){
   badge.append(number,name);
   routeCell.append(badge);
 
-  const destination=getDestinationDisplay(trip,stop);
+  const middle=getMiddleDisplay(trip,stop);
 
   const stopCell=document.createElement("div");
   stopCell.className="departure-cell stop-cell";
 
   const stopName=document.createElement("span");
   stopName.className="stop-name";
-  stopName.textContent=destination.primary;
+  stopName.textContent=middle.primary;
   stopCell.append(stopName);
 
-  if(destination.secondary){
+  if(middle.secondary){
     const stopNote=document.createElement("span");
     stopNote.className="stop-note";
-    stopNote.textContent=destination.secondary;
+    stopNote.textContent=middle.secondary;
     stopCell.append(stopNote);
   }
 
@@ -404,11 +409,22 @@ function createDepartureRow(item,now){
   return row;
 }
 
-function getDestinationDisplay(trip,stop){
-  if(trip.route_id==="kuwa"){
-    const direction=trip.loop_direction==="right"?"右回り":"左回り";
+function getMiddleDisplay(trip,stop){
+  if(direction==="K2S"){
+    const boardingTime=trip.stop_calls?.[0]?.time??trip.display_time;
+    const walk=Number(trip.walk_minutes??stop.walk_minutes??0);
     return {
-      primary:direction,
+      primary:stop.name??trip.college_stop_id,
+      secondary:walk>0
+        ?"バス "+boardingTime+"・正門から徒歩約"+walk+"分"
+        :"バス "+boardingTime
+    };
+  }
+
+  if(trip.route_id==="kuwa"){
+    const loop=trip.loop_direction==="right"?"右回り":"左回り";
+    return {
+      primary:loop,
       secondary:"高専正門経由"
     };
   }
