@@ -257,8 +257,8 @@ function renderNotice(now){
   const isPreview=Boolean(effective&&current<effective);
 
   const text=isPreview
-    ?"プレビュー表示：この発車標は"+formatRevision(effective)+"の時刻表に基づきます。　Preview: This departure board is based on the timetable revised on "+formatRevisionEnglish(effective)+"."
-    :"この発車標は時刻表上の発車時刻に基づく案内です。実際の運行位置や遅延は反映していません。　This departure board is based on scheduled departure times. Real-time vehicle locations and delays are not shown.";
+    ?"プレビュー表示："+formatRevision(effective)+"の時刻表に基づきます。　Preview: Based on the timetable revised on "+formatRevisionEnglish(effective)+"."
+    :"時刻表に基づく案内です。実際の運行状況は反映していません。　Based on the timetable. Real-time service information is not shown."
 
   noticeTrack.classList.toggle("preview",isPreview);
 
