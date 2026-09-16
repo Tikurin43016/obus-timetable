@@ -136,6 +136,17 @@ function renderLegend(data,trips){
     );
   }
 
+  if(direction==="K2S"){
+    rows.push(
+      legendRow(
+        "補正時分",
+        [legendItem(
+          "各時刻は、のりばまでの徒歩時間として高専正門 0分、小山高専入口 6分、中久喜二丁目 9分を差し引いて表示しています。"
+        )]
+      )
+    );
+  }
+
   if(calendarIds.length){
     rows.push(
       legendRow(
