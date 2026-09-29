@@ -116,6 +116,7 @@ function createTrip(data,trip){
 }
 
 function renderLegend(data,trips){
+  const routeIds=[...new Set(trips.map(trip=>trip.route_id))];
   const stopIds=[...new Set(
     trips
       .filter(trip=>trip.route_id==="kuwa")
@@ -126,6 +127,15 @@ function renderLegend(data,trips){
     .filter(id=>CALENDAR_DESCRIPTIONS[id]);
 
   const rows=[];
+
+  if(routeIds.length){
+    rows.push(
+      legendRow(
+        "路線",
+        routeIds.map(id=>routeLegendItem(id,data.routes[id]?.name??id))
+      )
+    );
+  }
 
   if(stopIds.length){
     rows.push(
@@ -188,6 +198,13 @@ function legendItem(text){
   const item=document.createElement("span");
   item.className="legend-item";
   item.textContent=text;
+  return item;
+}
+
+function routeLegendItem(routeId,text){
+  const item=legendItem(text);
+  item.classList.add("route-key");
+  item.dataset.route=routeId;
   return item;
 }
 
