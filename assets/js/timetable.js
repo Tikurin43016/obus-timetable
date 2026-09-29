@@ -1,5 +1,6 @@
 const DATA_URL="./obus_2026_kosen.json";
 const STOP_LABELS={gate:"正門",entrance:"入口",nakakuki2:"中二"};
+const ROUTE_ORDER=["taka","joto","kuwa"];
 const CALENDAR_MARKS={daily:"",joto_weekday:"※",kuwa_mon_fri:"◆"};
 const CALENDAR_DESCRIPTIONS={
   joto_weekday:"※ 平日のみ",
@@ -116,7 +117,8 @@ function createTrip(data,trip){
 }
 
 function renderLegend(data,trips){
-  const routeIds=[...new Set(trips.map(trip=>trip.route_id))];
+  const presentRoutes=new Set(trips.map(trip=>trip.route_id));
+  const routeIds=ROUTE_ORDER.filter(id=>presentRoutes.has(id));
   const stopIds=[...new Set(
     trips
       .filter(trip=>trip.route_id==="kuwa")
