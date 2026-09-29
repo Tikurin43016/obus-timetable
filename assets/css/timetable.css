@@ -225,9 +225,13 @@ a{color:inherit}
   border-radius:50%;
   background:currentColor
 }
-.route-key[data-route="taka"]{color:var(--taka)}
-.route-key[data-route="joto"]{color:var(--joto)}
-.route-key[data-route="kuwa"]{color:var(--kuwa)}
+.route-key[data-route="taka"],
+.route-name[data-route="taka"]{color:var(--taka)}
+.route-key[data-route="joto"],
+.route-name[data-route="joto"]{color:var(--joto)}
+.route-key[data-route="kuwa"],
+.route-name[data-route="kuwa"]{color:var(--kuwa)}
+.route-name{font-weight:800}
 .page-footer{
   margin-top:10px;
   padding-top:8px;
