@@ -171,9 +171,7 @@ function renderLegend(data,trips){
   rows.push(
     legendRow(
       "案内",
-      [legendItem(
-        "高岳線は小山高専入口、城東中久喜線は高専正門を発着します。桑東部絹路線は各便の停留所表示をご確認ください。"
-      )]
+      [noticeLegendItem(data)]
     )
   );
 
@@ -207,6 +205,28 @@ function routeLegendItem(routeId,text){
   const item=legendItem(text);
   item.classList.add("route-key");
   item.dataset.route=routeId;
+  return item;
+}
+
+function routeName(routeId,text){
+  const span=document.createElement("span");
+  span.className="route-name";
+  span.dataset.route=routeId;
+  span.textContent=text;
+  return span;
+}
+
+function noticeLegendItem(data){
+  const item=document.createElement("span");
+  item.className="legend-item";
+  item.append(
+    routeName("taka",data.routes.taka?.name??"高岳線"),
+    "は小山高専入口、",
+    routeName("joto",data.routes.joto?.name??"城東中久喜線"),
+    "は高専正門を発着します。",
+    routeName("kuwa",data.routes.kuwa?.name??"桑東部絹路線"),
+    "は各便の停留所表示をご確認ください。"
+  );
   return item;
 }
 
