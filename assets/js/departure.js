@@ -1,6 +1,7 @@
 const DATA_URL=document.body.dataset.dataUrl??"../obus_2026_kosen.json";
 const direction=document.body.dataset.direction==="K2S"?"K2S":"S2K";
 const MAX_ROWS=5;
+const SOURCE_NOTICE="出典：小山市公式時刻表（高岳線・城東中久喜線・桑東部絹路線）。";
 const REFRESH_MS=1000;
 
 const DESTINATION_DISPLAY={
@@ -261,9 +262,9 @@ function renderNotice(now){
     ?"正門出発目安は各停留所の時刻と徒歩時間から算出した参考時刻です。　Gate departure times are estimates including walking time."
     :"時刻表に基づく案内です。実際の運行状況は反映していません。　Based on the timetable. Real-time service information is not shown.";
 
-  const text=isPreview
+  const text=(isPreview
     ?"プレビュー表示："+formatRevision(effective)+"の時刻表に基づきます。　Preview: Based on the timetable revised on "+formatRevisionEnglish(effective)+"."
-    :normalText;
+    :normalText)+"　"+SOURCE_NOTICE;
 
   noticeTrack.classList.toggle("preview",isPreview);
 
@@ -461,3 +462,4 @@ function renderError(message){
   paragraph.textContent=message;
   departuresRoot.replaceChildren(paragraph);
 }
+
