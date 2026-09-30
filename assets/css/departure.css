@@ -494,6 +494,7 @@ a:focus-visible{
 }
 
 @media(max-width:900px){
+  html,body{min-width:0}
   body{overflow:auto}
 
   .departure-board{
@@ -536,7 +537,7 @@ a:focus-visible{
   }
 
   .departures{
-    grid-auto-rows:minmax(74px,1fr);
+    grid-auto-rows:minmax(70px,1fr);
   }
 
   .departure-cell{
