@@ -87,7 +87,8 @@ function tripCard(item,now,compact=false){
   return card;
 }
 function syncDirection(){
-  roots.heading.textContent=direction==='K2S'?'高専正門 → 小山駅':'小山駅東口 → 高専';
+  roots.heading.textContent=direction==='K2S'?'小山駅方面':'高専方面';
+  roots.heading.setAttribute('aria-label',direction==='K2S'?'高専正門から小山駅方面':'小山駅東口から高専方面');
   roots.switch.textContent=direction==='K2S'?'高専方面に切替':'駅方面に切替';
   roots.walk.hidden=direction!=='K2S';
   roots.full.href='../obus_2026_kosen_'+direction.toLowerCase()+'.html';
