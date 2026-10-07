@@ -75,7 +75,8 @@ function tripCard(item,now,compact=false){
   const time=element('time','departure-time',trip.display_time);
   time.dateTime=dateKey(date)+'T'+trip.display_time+':00+09:00';
   const remaining=minutes(trip.display_time)-now.hour*60-now.minute;
-  const countdown=offset>0?(offset===1?'明日':date.month+'/'+date.day):remaining===0?'まもなく': 'あと'+remaining+'分';
+  const action=direction==='K2S'?'出発':'発車';
+  const countdown=offset>0?(offset===1?'明日':date.month+'/'+date.day):remaining===0?'まもなく'+action:'あと'+remaining+'分で'+action;
   card.append(routeLabel,element('p','time-label',label),time,element('p','countdown',countdown));
   if(direction==='K2S'){
     const boarding=trip.stop_calls.find(call=>call.stop_id===trip.college_stop_id);
