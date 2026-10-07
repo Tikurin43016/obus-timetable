@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="Galaxy Watchなどの小さな画面向け、おーバス 高専時刻表の次の便の案内。">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/watch.css?v=20261007">
+  <script defer src="../assets/js/watch.js?v=20261007"></script>
+  <title>時計用｜おーバス 高専時刻表</title>
+</head>
+<body>
+  <main class="watch">
+    <section class="watch-screen" aria-label="次の便">
+      <header class="watch-heading">
+        <h1 id="heading">小山駅東口 → 高専</h1>
+        <p><time id="clock">--:--</time><span id="day-label"></span></p>
+      </header>
+      <div id="next-trip" class="trip" aria-live="polite" aria-atomic="true">
+        <p class="message">時刻を読み込み中…</p>
+      </div>
+      <nav class="watch-controls" aria-label="方向切り替え">
+        <button id="switch-direction" type="button">駅方面に切替</button>
+      </nav>
+    </section>
+    <section class="following-screen" aria-labelledby="following-heading">
+      <h2 id="following-heading">そのあとの便</h2>
+      <div id="following-trips"></div>
+    </section>
+    <footer class="watch-footer">
+      <p id="revision">2026年10月1日改正</p>
+      <p>非公式・時刻表に基づく案内です。遅延・臨時運休は反映していません。</p>
+      <p id="walk-note" hidden>帰りの大きな時刻は正門出発目安です。のりばまでの徒歩時間をバス時刻から差し引いています。</p>
+      <p>出典：小山市公式時刻表（高岳線・城東中久喜線・桑東部絹路線）</p>
+      <a id="full-timetable" href="../obus_2026_kosen_s2k.html">時刻表を見る</a>
+      <a href="../">トップへ</a>
+    </footer>
+    <noscript><p class="message">発車案内にはJavaScriptを有効にしてください。</p></noscript>
+  </main>
+</body>
+</html>
