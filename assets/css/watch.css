@@ -8,8 +8,8 @@ h1{font-size:clamp(16px,8vw,28px);line-height:1.15;font-weight:700;margin:0}
 .watch-now{margin:0 0 12px;font-size:13px;color:#59636e}
 #day-label{margin-left:5px}
 .trip{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:0;gap:1px}
-.route-label{margin:0;font-size:clamp(16px,7.5vw,26px);line-height:1.1;font-weight:700;max-width:100%}
-.route-label::before{content:"";display:inline-block;width:8px;height:8px;margin-right:5px;border-radius:50%;background:var(--route-color);border:1px solid var(--route-border,var(--route-color))}
+.route-label{display:flex;align-items:center;gap:5px;margin:0;font-size:clamp(16px,7.5vw,26px);line-height:1.1;font-weight:700;max-width:100%}
+.route-label::before{content:"";display:block;flex:none;width:8px;height:8px;border-radius:50%;background:var(--route-color);border:1px solid var(--route-border,var(--route-color))}
 [data-route="taka"]{--route-color:#111;--route-border:#111}
 [data-route="joto"]{--route-color:#d81424}
 [data-route="kuwa"]{--route-color:#005bbb}
