@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#000000">
   <meta name="description" content="Galaxy Watchなどの小さな画面向け、おーバス 高専時刻表の次の便の案内。">
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/css/watch.css?v=20261007-readability">
+  <link rel="stylesheet" href="../assets/css/watch.css?v=20261007-large">
   <script defer src="../assets/js/watch.js?v=20261007"></script>
   <title>時計用｜おーバス 高専時刻表</title>
 </head>
@@ -15,7 +15,6 @@
     <section class="watch-screen" aria-label="次の便">
       <header class="watch-heading">
         <h1 id="heading">小山駅東口 → 高専</h1>
-        <p><time id="clock">--:--</time><span id="day-label"></span></p>
       </header>
       <div id="next-trip" class="trip" aria-live="polite" aria-atomic="true">
         <p class="message">時刻を読み込み中…</p>
@@ -29,6 +28,7 @@
       <div id="following-trips"></div>
     </section>
     <footer class="watch-footer">
+      <p class="watch-now">現在 <time id="clock">--:--</time><span id="day-label"></span></p>
       <p id="revision">2026年10月1日改正</p>
       <p>非公式・時刻表に基づく案内です。遅延・臨時運休は反映していません。</p>
       <p id="walk-note" hidden>帰りの大きな時刻は正門出発目安です。のりばまでの徒歩時間をバス時刻から差し引いています。</p>
