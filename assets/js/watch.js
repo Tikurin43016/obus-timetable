@@ -33,12 +33,6 @@ function addDays(now,offset){
   return {year:date.getUTCFullYear(),month:date.getUTCMonth()+1,day:date.getUTCDate(),weekday:date.getUTCDay()};
 }
 function getNow(){
-  const debug=params.get('debug')==='1'?params.get('time'):null;
-  if(debug&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(debug)){
-    const [year,month,day,hour,minute]=debug.match(/\d+/g).map(Number);
-    const check=new Date(Date.UTC(year,month-1,day,hour,minute));
-    if(check.getUTCFullYear()===year&&check.getUTCMonth()+1===month&&check.getUTCDate()===day&&check.getUTCHours()===hour&&check.getUTCMinutes()===minute){return {year,month,day,hour,minute};}
-  }
   const now={};
   for(const part of formatter.formatToParts(new Date())){if(part.type!=='literal')now[part.type]=Number(part.value);}
   return now;
