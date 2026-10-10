@@ -5,3 +5,9 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   Strict-Transport-Security: max-age=31536000
+
+/obus_2026_kosen_s2k.pdf
+  Link: <https://o-bus-kosen.pages.dev/obus_2026_kosen_s2k>; rel="canonical"
+
+/obus_2026_kosen_k2s.pdf
+  Link: <https://o-bus-kosen.pages.dev/obus_2026_kosen_k2s>; rel="canonical"

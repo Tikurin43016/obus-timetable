@@ -25,3 +25,11 @@ node scripts/generate-timetables.mjs
 ```
 
 ブラウザ上では従来通りJavaScriptでも同じデータを読み込み、表示を更新します。静的HTMLとJSONの内容がずれないように、生成後のHTMLもまとめてコミットしてください。
+
+## 検索向けの設定
+
+- 公開URLは `https://o-bus-kosen.pages.dev/`。HTMLのcanonical・OGP・内部リンク・sitemapはCloudflare Pagesの拡張子なしURLに揃えます。
+- ページの内容を変更したときは、`sitemap.xml` の該当URLの `lastmod` を実際の更新日に変更してください。時刻表の改正日とは別です。変更のないページや単なる再デプロイでは更新しません。
+- PDFのcanonicalは `_headers` で対応するHTMLを指定しています。PDFのダウンロード・印刷は従来どおり利用できます。
+- ルートの `404.html` は、存在しないURLにトップページを返すSPAフォールバックを防ぐために必要です。404ページはサイトマップに含めません。
+- Search Consoleの確認用HTMLはそのまま維持します。Googleの再取得・検索表示への反映状況はSearch Consoleで確認してください。
