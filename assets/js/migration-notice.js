@@ -32,7 +32,7 @@
   explanation.textContent = "諸般の事情により、「おーバス 高専時刻表」は「NITOCバスナビ」に名称・URLを変更することになりました。";
 
   const apology = document.createElement("p");
-  apology.textContent = "突然のご案内となり、申し訳ありません。旧URLは当面の間維持し、新しいサイトへ自動転送しますので、これまでのリンクやブックマークも引き続き使えます。もしよろしければ、ブックマークを新しいURLに変更していただけますと幸いです。";
+  apology.textContent = "突然のご案内となり、申し訳ありません。旧URLも当面の間そのまま使えますので、これまでのリンクやブックマークからも引き続きご利用いただけます。もしよろしければ、ブックマークを新しいURLに変更していただけますと幸いです。";
 
 
   const address = document.createElement("p");
