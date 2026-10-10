@@ -25,17 +25,15 @@
 
   const title = document.createElement("h2");
   title.id = "migration-notice-title";
-  title.textContent = "サイト移転のお知らせ";
+  title.textContent = "ごめんなさい。";
 
   const explanation = document.createElement("p");
   explanation.id = "migration-notice-description";
-  explanation.textContent = "「おーバス 高専時刻表」は「NITOCバスナビ」に名称を変更し、URLも移転しました。";
+  explanation.textContent = "諸般の事情により、「おーバス 高専時刻表」は「NITOCバスナビ」に名称・URLを変更しました。";
 
   const apology = document.createElement("p");
-  apology.textContent = "突然の変更となってしまい、ご利用いただいていた皆さまには、ご不便をおかけして大変申し訳ありません。";
+  apology.textContent = "突然の変更でご不便をおかけします。時刻表はこれまでどおり使えますので、ブックマークの更新をお願いいたします。";
 
-  const usage = document.createElement("p");
-  usage.textContent = "ブックマークなどを登録してくださっていた方には、重ねてお手数をおかけしますが、新しいURLへの変更をお願いいたします。時刻表はこれまでどおりご利用いただけます。";
 
   const address = document.createElement("p");
   address.className = "migration-dialog__address";
@@ -56,7 +54,7 @@
     dialog.remove();
   });
 
-  dialog.append(title, explanation, apology, usage, address, close);
+  dialog.append(title, explanation, apology, address, close);
   document.body.append(dialog);
   if (typeof dialog.showModal === "function") dialog.showModal();
   else dialog.setAttribute("open", "");
