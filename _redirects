@@ -1,0 +1,5 @@
+# Legacy o-bus-kosen.pages.dev -> nitocbus.pages.dev
+# Deploy this file ONLY from the legacy project's production branch.
+# Do not activate until the new nitocbus Pages project is publicly reachable.
+/ https://nitocbus.pages.dev/ 301
+/* https://nitocbus.pages.dev/:splat 301
