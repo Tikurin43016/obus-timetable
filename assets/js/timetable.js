@@ -231,6 +231,8 @@ function noticeLegendItem(data){
 }
 
 function renderError(message){
+  // Keep the statically rendered timetable available when the JSON request fails.
+  if(timetableRoot.querySelector(".hour-row")) return;
   const paragraph=document.createElement("p");
   paragraph.className="status-message error";
   paragraph.textContent=message;
