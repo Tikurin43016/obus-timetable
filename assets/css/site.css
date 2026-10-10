@@ -47,6 +47,7 @@ a{color:inherit}
   white-space:nowrap
 }
 .departure-link:hover{background:#242980}
+.site-title{margin:0;line-height:1.15}
 .brand{
   color:var(--navy);
   font-size:clamp(24px,3.4vw,34px);
