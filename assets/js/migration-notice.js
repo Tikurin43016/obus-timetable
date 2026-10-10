@@ -29,13 +29,13 @@
 
   const explanation = document.createElement("p");
   explanation.id = "migration-notice-description";
-  explanation.textContent = "「おーバス 高専時刻表」は「NITOCバスナビ」に名前を変更しました。";
+  explanation.textContent = "「おーバス 高専時刻表」は「NITOCバスナビ」に名称を変更し、URLも移転しました。";
 
   const apology = document.createElement("p");
-  apology.textContent = "URLも変更となり、お手数をおかけしてすみません。";
+  apology.textContent = "突然の変更となってしまい、ご利用いただいていた皆さまには、ご不便をおかけして大変申し訳ありません。";
 
   const usage = document.createElement("p");
-  usage.textContent = "時刻表はこれまでどおりご利用いただけます。ブックマークの更新をお願いします。";
+  usage.textContent = "ブックマークなどを登録してくださっていた方には、重ねてお手数をおかけしますが、新しいURLへの変更をお願いいたします。時刻表はこれまでどおりご利用いただけます。";
 
   const address = document.createElement("p");
   address.className = "migration-dialog__address";
