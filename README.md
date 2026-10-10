@@ -1,4 +1,4 @@
-# おーバス 高専時刻表
+# NITOCバスナビ
 
 2026年10月1日改正対応。
 
@@ -28,8 +28,18 @@ node scripts/generate-timetables.mjs
 
 ## 検索向けの設定
 
-- 公開URLは `https://o-bus-kosen.pages.dev/`。HTMLのcanonical・OGP・内部リンク・sitemapはCloudflare Pagesの拡張子なしURLに揃えます。
+- 公開URLは `https://nitocbus.pages.dev/`。HTMLのcanonical・OGP・内部リンク・sitemapはCloudflare Pagesの拡張子なしURLに揃えます。
 - ページの内容を変更したときは、`sitemap.xml` の該当URLの `lastmod` を実際の更新日に変更してください。時刻表の改正日とは別です。変更のないページや単なる再デプロイでは更新しません。
 - PDFのcanonicalは `_headers` で対応するHTMLを指定しています。PDFのダウンロード・印刷は従来どおり利用できます。
 - ルートの `404.html` は、存在しないURLにトップページを返すSPAフォールバックを防ぐために必要です。404ページはサイトマップに含めません。
 - Search Consoleの確認用HTMLはそのまま維持します。Googleの再取得・検索表示への反映状況はSearch Consoleで確認してください。
+
+## NITOCバスナビへの移行（2026年10月）
+
+- 新URL：`https://nitocbus.pages.dev/`（Cloudflare Pagesの新規プロジェクト名 `nitocbus` でデプロイすること。実際の利用可否・デプロイの成功はCloudflare側で確認）。
+- 旧URL：`https://o-bus-kosen.pages.dev/`。**古いPagesプロジェクトは削除しない**。
+- 同じGitHubリポジトリに新Pagesプロジェクトを接続し、このブランチで動作確認したうえで、`main` を新サイトの本番ブランチにする。
+- 旧Pagesプロジェクトの本番ブランチを `chore/legacy-301-redirect` に変更すると、同ブランチの `_redirects` により、旧URLを同じパスの新URLへ301転送できる（Cloudflare Pages > Settings > Builds & deployments > Production branch）。
+- **切替順序：新サイト公開確認 → 旧プロジェクトの本番ブランチ変更 → 301確認。** 先に旧側を転送しないこと。
+- Search Consoleで新URLをプロパティ登録し、サイトマップ `https://nitocbus.pages.dev/sitemap.xml` を送信する。旧URLの301は維持する。
+- リポジトリ名、時刻データ、PDFのファイルパスは互換性のため変更しない。
