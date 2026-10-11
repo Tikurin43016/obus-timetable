@@ -26,6 +26,16 @@ node scripts/generate-timetables.mjs
 
 ブラウザ上では従来通りJavaScriptでも同じデータを読み込み、表示を更新します。静的HTMLとJSONの内容がずれないように、生成後のHTMLもまとめてコミットしてください。
 
+## 印刷用PDFの生成
+
+印刷用の往路・復路PDFは `obus_2026_kosen.json` を唯一の時刻データとして自動生成します。
+表題とQRコードのリンクは `NITOCバスナビ` / `https://nitocbus.pages.dev/` に統一し、A4縦1枚に52便・51便を掲載しています。
+復路は高専正門からの出発目安と実際の停留所発車時刻を区別して掲載します。
+
+- 生成スクリプト：`scripts/generate-pdfs.py`
+- 実行方法：`python scripts/generate-pdfs.py`（`weasyprint`、`qrcode[pil]`、日本語フォントが必要）
+- GitHub Actions：`.github/workflows/build-pdfs.yml`。時刻JSONまたはスクリプト更新時にPDFを再生成して当該ブランチへコミットします。
+
 ## 検索向けの設定
 
 - 公開URLは `https://nitocbus.pages.dev/`。HTMLのcanonical・OGP・内部リンク・sitemapはCloudflare Pagesの拡張子なしURLに揃えます。
