@@ -43,6 +43,8 @@ node scripts/generate-timetables.mjs
 - PDFのcanonicalは `_headers` で対応するHTMLを指定しています。PDFのダウンロード・印刷は従来どおり利用できます。
 - ルートの `404.html` は、存在しないURLにトップページを返すSPAフォールバックを防ぐために必要です。404ページはサイトマップに含めません。
 - Search Consoleの確認用HTMLはそのまま維持します。Googleの再取得・検索表示への反映状況はSearch Consoleで確認してください。
+- サイトマップ送信先は新サイトのURLプレフィックスプロパティ `https://nitocbus.pages.dev/`。同プロパティの「サイトマップ」で `sitemap.xml` を送信します。サイトマップXML自体のインデックス登録リクエストは不要です。
+- サイトマップとrobots.txtは配信形式を `_headers` で明示し、キャッシュを再検証させます。旧サイトの転送では、この2ファイルに移転案内用の `?moved=obuskosen` を付けません。
 
 ## NITOCバスナビへの移行（2026年10月）
 
