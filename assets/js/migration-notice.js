@@ -12,11 +12,26 @@
   }
 
   const seenKey = "nitocbus-migration-notice-seen";
+  let alreadySeen = false;
   try {
-    if (window.sessionStorage.getItem(seenKey) === "1") return;
+    alreadySeen = window.localStorage.getItem(seenKey) === "1";
+  } catch {
+    // Fall back to session storage when persistent storage is unavailable.
+  }
+  try {
+    if (window.sessionStorage.getItem(seenKey) === "1") {
+      alreadySeen = true;
+      // Carry over dismissals from the previous session-only implementation.
+      try {
+        window.localStorage.setItem(seenKey, "1");
+      } catch {
+        // Session storage still prevents repeated dialogs in this tab.
+      }
+    }
   } catch {
     // Session storage may be disabled by the browser.
   }
+  if (alreadySeen) return;
 
   const dialog = document.createElement("dialog");
   dialog.className = "migration-dialog";
@@ -46,6 +61,11 @@
 
   close.addEventListener("click", () => dialog.close());
   dialog.addEventListener("close", () => {
+    try {
+      window.localStorage.setItem(seenKey, "1");
+    } catch {
+      // Persistent storage may be disabled by the browser.
+    }
     try {
       window.sessionStorage.setItem(seenKey, "1");
     } catch {
