@@ -11,10 +11,10 @@ flowchart TD
     A["小山市の公式時刻表<br/>出典・転記内容を確認"] --> B["obus_2026_kosen.json<br/>時刻データ"]
     B --> C["generate-timetables.mjs<br/>静的HTMLを再生成"]
     B --> D["generate-pdfs.py<br/>印刷用PDFを生成"]
-    B --> E["ブラウザのJavaScript<br/>時刻表・発車標・時計用表示"]
-    C --> F["Cloudflare Pages<br/>静的コンテンツとして配信"]
+    B --> F["Cloudflare Pages<br/>静的コンテンツとして配信"]
+    C --> F
     D --> F
-    E --> F
+    F --> E["ブラウザのJavaScript<br/>時刻表・発車標・時計用表示"]
 ```
 
 JSONを変更しただけでは、**生成済みHTMLとPDFは自動的に同じ内容になるとは限りません**。それぞれの再生成を確認してください。
