@@ -1,35 +1,31 @@
 # NITOCバスナビ
 
-**小山駅東口 ↔ 小山高専**を結ぶ、おーバスの時刻表を見やすくまとめた非公式サイトです。**2026年10月1日改正**の時刻表に対応しています。
+小山駅東口と小山高専を結ぶコミュニティバス「おーバス」の時刻情報を、通学・来校向けにまとめた**非公式・個人開発の静的ウェブサイト**です。現行データは2026年10月1日改正に対応しています。
 
-> [!IMPORTANT]
-> 個人制作の**非公式**サービスです。発車案内は時刻表に基づいており、**バスの現在位置・遅延・臨時運休は反映しません**。乗車前には[小山市の公式情報](https://www.city.oyama.tochigi.jp/o-bus/rosen-jikoku/page001803.html)もご確認ください。
+- サイト：<https://nitocbus.pages.dev/>
+- 運行情報の出典：[小山市公式の路線・時刻表](https://www.city.oyama.tochigi.jp/o-bus/rosen-jikoku/page001803.html)
 
-## サイトを使う
+このREADMEと `docs/` は、**コードの理解・開発・更新に使う技術資料**です。サイト利用者向けの取扱説明書ではありません。利用時に必要な注意事項はサイト内で完結させます。
 
-| やりたいこと | 開くページ |
+## 設計方針
+
+- **静的構成**：HTML・CSS・JavaScript・JSONを使用。専用のバックエンド・データベース・フレームワークは不要。
+- **データの一元化**：`obus_2026_kosen.json` を時刻データの原本として、時刻表HTMLと印刷用PDFを生成する。
+- **公式時刻と参考値を分離**：停留所の公式時刻を `stop_calls` に保存し、徒歩補正後の表示時刻 `display_time` と区別する。
+- **JavaScriptに依存しすぎない**：方向別の時刻表HTMLには生成済みの静的表示を埋め込み、データ取得に失敗しても時刻表を残す。
+- **説明書を前提としないUI**：方向・停留所・運行条件・徒歩補正など、判断に必要な情報は画面内で判別できるようにする。
+- **運行追跡ではない**：発車標や時計向け画面は時刻表ベースであり、遅延・臨時運休・車両位置を取得しない。
+
+## ドキュメント
+
+| 文書 | 内容 |
 | --- | --- |
-| 小山駅東口から高専へ | [行きの時刻表](https://nitocbus.pages.dev/obus_2026_kosen_s2k) |
-| 高専から小山駅東口へ | [帰りの時刻表](https://nitocbus.pages.dev/obus_2026_kosen_k2s) |
-| 次の便を発車標のように見る | [発車案内](https://nitocbus.pages.dev/departure/) |
-| 時計などの小画面で見る | [時計用表示](https://nitocbus.pages.dev/watch/) |
-| 印刷する・PDFを保存する | [トップページ](https://nitocbus.pages.dev/)から方向別の「PDF版」 |
+| [設計・データ仕様](docs/architecture.md) | システム構成、ファイルの役割、JSONのデータモデル、表示時刻と運行条件、技術的制約 |
+| [時刻表の更新手順](docs/maintenance.md) | 公式資料の確認、データ更新、HTML/PDF生成、動作確認、公開・検索設定 |
 
-**帰りの時刻には注意してください。** 高専側からの時刻表で大きく表示するのは、実際のバス発車時刻ではなく、**高専正門を出る目安時刻**です。停留所までの徒歩時間を公式時刻から差し引いています。詳しくは[使い方・時刻の読み方](docs/usage.md)へ。
+## 開発環境
 
-## このリポジトリの資料
-
-サイト利用者向けの説明と、コードを読みたい人・自分で更新するときの説明を分けています。
-
-| ドキュメント | 内容 | 対象 |
-| --- | --- | --- |
-| [使い方・時刻の読み方](docs/usage.md) | 表示時刻、運行日、停留所、PDFと時計用画面 | 利用する人 |
-| [サイトの仕組み](docs/architecture.md) | ファイル構成、データと画面の関係、技術構成 | コードを読みたい人 |
-| [時刻表の更新・公開手順](docs/maintenance.md) | 更新チェックリスト、生成コマンド、確認事項 | 時刻表を更新するとき |
-
-## 開発を始める
-
-このサイトは**HTML・CSS・JavaScript・JSON**を中心とした静的サイトです。ウェブ表示のために専用のバックエンドやフレームワークは使っていません。
+ローカルで確認するには、リポジトリを取得してHTTPサーバーを起動します。
 
 ```sh
 git clone https://github.com/Tikurin43016/obus-timetable.git
@@ -37,15 +33,30 @@ cd obus-timetable
 python -m http.server 8000
 ```
 
-ブラウザで `http://localhost:8000/` を開いてください。JSONを取得する画面があるため、`file://` で直接HTMLを開く方法は推奨しません。
+`http://localhost:8000/` を開きます。JSONを取得する画面があるため、`file://` での直接表示は推奨しません。
 
-時刻データの原本は `obus_2026_kosen.json` です。更新後は静的HTMLとPDFの**両方を再生成**します。コマンド・必要環境・確認項目は[更新・公開手順](docs/maintenance.md)にまとめています。
+時刻表の静的HTMLを再生成する場合：
 
-## 公開先と権利について
+```sh
+node scripts/generate-timetables.mjs
+```
 
-- 新サイト用の設定URL：<https://nitocbus.pages.dev/>
-- 旧URL：<https://o-bus-kosen.pages.dev/>（移転・転送の設定については[更新・公開手順](docs/maintenance.md#公開と移転の確認)を参照）
-- バスの路線・運行情報の出典：[小山市公式の路線・時刻表](https://www.city.oyama.tochigi.jp/o-bus/rosen-jikoku/page001803.html)
-- 小山市・運行事業者・小山工業高等専門学校の公式サービスではありません。
+印刷用PDFの生成にはPython 3、WeasyPrint、qrcode（Pillow）、日本語フォントが必要です。コマンドと更新時の注意点は[時刻表の更新手順](docs/maintenance.md)に記載しています。
 
-※ リポジトリのソースコードを読んだだけでは、Cloudflare Pages側の本番設定・転送設定や公開URLの稼働状況までは確認できません。
+## 主なファイル
+
+| パス | 役割 |
+| --- | --- |
+| `obus_2026_kosen.json` | 時刻表データの原本 |
+| `index.html` | トップページ |
+| `obus_2026_kosen_s2k.html`, `obus_2026_kosen_k2s.html` | 方向別の時刻表 |
+| `departure/`, `watch/` | 発車標・小画面向け画面 |
+| `assets/` | CSS・JavaScriptなど |
+| `scripts/` | HTML・PDF生成スクリプト |
+| `_headers`, `robots.txt`, `sitemap.xml`, `404.html` | 配信・検索関連設定 |
+
+## 公開と出典
+
+GitHubリポジトリの内容はCloudflare Pages向けに構成されています。旧URL `o-bus-kosen.pages.dev` からの移転設定については[時刻表の更新手順](docs/maintenance.md#公開と移転の確認)を参照してください。実際の本番ブランチ・転送設定はCloudflare側でも確認が必要です。
+
+時刻情報の出典は小山市の公式資料です。本プロジェクトは小山市、バス運行事業者、小山工業高等専門学校の公式サービスではありません。
