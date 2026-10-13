@@ -1,64 +1,62 @@
 # NITOCバスナビ
 
-2026年10月1日改正対応。
+小山駅東口と小山高専を結ぶコミュニティバス「おーバス」の時刻情報を、通学・来校向けにまとめた**非公式・個人開発の静的ウェブサイト**です。現行データは2026年10月1日改正に対応しています。
 
-- `index.html` — 入口ページ
-- `obus_2026_kosen_s2k.html` — 小山駅東口 → 高専
-- `obus_2026_kosen_k2s.html` — 高専 → 小山駅東口
-- `obus_2026_kosen.json` — HTML表示用時刻データ
-- `obus_2026_kosen_s2k.pdf` / `obus_2026_kosen_k2s.pdf` — PDF版
-- `assets/` — CSS / JavaScript / favicon
-- `watch/` — Galaxy Watchなどの小画面向け発車案内。Samsungブラウザで開き、ブックマークして使用。
+- サイト：<https://nitocbus.pages.dev/>
+- 運行情報の出典：[小山市公式の路線・時刻表](https://www.city.oyama.tochigi.jp/o-bus/rosen-jikoku/page001803.html)
 
-時計用は次の3便を表示します。行き／帰りはボタンで切り替え、選択は端末に保存します。帰りの大きな時刻は正門出発目安で、実際のバス時刻と徒歩補正も併記します。画面を下にスクロールすると、そのあとの便や注記が見られます。
+このREADMEと `docs/` は、**コードの理解・開発・更新に使う技術資料**です。サイト利用者向けの取扱説明書ではありません。利用時に必要な注意事項はサイト内で完結させます。
 
-画面上では路線名と路線色を併記します。
+## 設計方針
 
-## 時刻表のHTML生成
+- **静的構成**：HTML・CSS・JavaScript・JSONを使用。専用のバックエンド・データベース・フレームワークは不要。
+- **データの一元化**：`obus_2026_kosen.json` を時刻データの原本として、時刻表HTMLと印刷用PDFを生成する。
+- **公式時刻と参考値を分離**：停留所の公式時刻を `stop_calls` に保存し、徒歩補正後の表示時刻 `display_time` と区別する。
+- **JavaScriptに依存しすぎない**：方向別の時刻表HTMLには生成済みの静的表示を埋め込み、データ取得に失敗しても時刻表を残す。
+- **説明書を前提としないUI**：方向・停留所・運行条件・徒歩補正など、判断に必要な情報は画面内で判別できるようにする。
+- **運行追跡ではない**：発車標や時計向け画面は時刻表ベースであり、遅延・臨時運休・車両位置を取得しない。
 
-検索エンジンやJavaScript無効環境でも便情報を読み取れるよう、2方向のHTMLには `obus_2026_kosen.json` を元に生成した静的時刻表を埋め込んでいます。
+## ドキュメント
 
-JSONの時刻データを更新したら、デプロイ前に次を実行してHTMLを再生成してください。
+| 文書 | 内容 |
+| --- | --- |
+| [設計・データ仕様](docs/architecture.md) | システム構成、ファイルの役割、JSONのデータモデル、表示時刻と運行条件、技術的制約 |
+| [時刻表の更新手順](docs/maintenance.md) | 公式資料の確認、データ更新、HTML/PDF生成、動作確認、公開・検索設定 |
+
+## 開発環境
+
+ローカルで確認するには、リポジトリを取得してHTTPサーバーを起動します。
+
+```sh
+git clone https://github.com/Tikurin43016/obus-timetable.git
+cd obus-timetable
+python -m http.server 8000
+```
+
+`http://localhost:8000/` を開きます。JSONを取得する画面があるため、`file://` での直接表示は推奨しません。
+
+時刻表の静的HTMLを再生成する場合：
 
 ```sh
 node scripts/generate-timetables.mjs
 ```
 
-ブラウザ上では従来通りJavaScriptでも同じデータを読み込み、表示を更新します。静的HTMLとJSONの内容がずれないように、生成後のHTMLもまとめてコミットしてください。
+印刷用PDFの生成にはPython 3、WeasyPrint、qrcode（Pillow）、日本語フォントが必要です。コマンドと更新時の注意点は[時刻表の更新手順](docs/maintenance.md)に記載しています。
 
-## 印刷用PDFの生成
+## 主なファイル
 
-印刷用の往路・復路PDFは `obus_2026_kosen.json` を唯一の時刻データとして自動生成します。
-表題とQRコードのリンクは `NITOCバスナビ` / `https://nitocbus.pages.dev/` に統一し、A4縦1枚に52便・51便を掲載しています。
-復路は高専正門からの出発目安と実際の停留所発車時刻を区別して掲載します。
+| パス | 役割 |
+| --- | --- |
+| `obus_2026_kosen.json` | 時刻表データの原本 |
+| `index.html` | トップページ |
+| `obus_2026_kosen_s2k.html`, `obus_2026_kosen_k2s.html` | 方向別の時刻表 |
+| `departure/`, `watch/` | 発車標・小画面向け画面 |
+| `assets/` | CSS・JavaScriptなど |
+| `scripts/` | HTML・PDF生成スクリプト |
+| `_headers`, `robots.txt`, `sitemap.xml`, `404.html` | 配信・検索関連設定 |
 
-- 生成スクリプト：`scripts/generate-pdfs.py`
-- 実行方法：`python scripts/generate-pdfs.py`（`weasyprint`、`qrcode[pil]`、日本語フォントが必要）
-- GitHub Actions：`.github/workflows/build-pdfs.yml`。時刻JSONまたはスクリプト更新時にPDFを再生成して当該ブランチへコミットします。
+## 公開と出典
 
-## 検索向けの設定
+GitHubリポジトリの内容はCloudflare Pages向けに構成されています。旧URL `o-bus-kosen.pages.dev` からの移転設定については[時刻表の更新手順](docs/maintenance.md#公開と移転の確認)を参照してください。実際の本番ブランチ・転送設定はCloudflare側でも確認が必要です。
 
-- 公開URLは `https://nitocbus.pages.dev/`。HTMLのcanonical・OGP・内部リンク・sitemapはCloudflare Pagesの拡張子なしURLに揃えます。
-- ページの内容を変更したときは、`sitemap.xml` の該当URLの `lastmod` を実際の更新日に変更してください。時刻表の改正日とは別です。変更のないページや単なる再デプロイでは更新しません。
-- PDFのcanonicalは `_headers` で対応するHTMLを指定しています。PDFのダウンロード・印刷は従来どおり利用できます。
-- ルートの `404.html` は、存在しないURLにトップページを返すSPAフォールバックを防ぐために必要です。404ページはサイトマップに含めません。
-- Search Consoleの確認用HTMLはそのまま維持します。Googleの再取得・検索表示への反映状況はSearch Consoleで確認してください。
-- サイトマップ送信先は新サイトのURLプレフィックスプロパティ `https://nitocbus.pages.dev/`。同プロパティの「サイトマップ」で `sitemap.xml` を送信します。サイトマップXML自体のインデックス登録リクエストは不要です。
-- サイトマップとrobots.txtは配信形式を `_headers` で明示し、キャッシュを再検証させます。旧サイトの転送では、この2ファイルに移転案内用の `?moved=obuskosen` を付けません。
-
-## NITOCバスナビへの移行（2026年10月）
-
-- 新URL：`https://nitocbus.pages.dev/`（Cloudflare Pagesの新規プロジェクト名 `nitocbus` でデプロイすること。実際の利用可否・デプロイの成功はCloudflare側で確認）。
-- 旧URL：`https://o-bus-kosen.pages.dev/`。**古いPagesプロジェクトは削除しない**。
-- 同じGitHubリポジトリに新Pagesプロジェクトを接続し、このブランチで動作確認したうえで、`main` を新サイトの本番ブランチにする。
-- 旧Pagesプロジェクトの本番ブランチを `chore/legacy-301-redirect` に変更すると、同ブランチの `_redirects` により、旧URLを同じパスの新URLへ301転送できる（Cloudflare Pages > Settings > Builds & deployments > Production branch）。
-- **切替順序：新サイト公開確認 → 旧プロジェクトの本番ブランチ変更 → 301確認。** 先に旧側を転送しないこと。
-- Search Consoleで新URLをプロパティ登録し、サイトマップ `https://nitocbus.pages.dev/sitemap.xml` を送信する。旧URLの301は維持する。
-- リポジトリ名、時刻データ、PDFのファイルパスは互換性のため変更しない。
-
-## 旧URLからの移転案内
-
-- 旧サイトの `_redirects` は新URLへ301転送し、`?moved=obuskosen` を付ける（旧プロジェクト専用ブランチ `chore/legacy-301-redirect`）。
-- 新サイトの全HTMLページはマーカーを検知した場合だけ案内ダイアログを表示する。ブラウザのアドレス欄からマーカーを消し、閉じたことを `localStorage` に記録して同じブラウザ環境では次回以降表示しない。保存が使えない場合のみ `sessionStorage` で同一タブ内の再表示を抑制する。直接アクセス時は表示しない。
-- PDFに直接転送された場合、ブラウザのPDFビューアにはHTMLのダイアログを表示できない。PDFリンクは同じパスで転送され、閲覧機能は維持する。
-- 切替前に旧サイト→新サイトの各HTML・PDFの転送、案内の閉じる動作、通常アクセスでは表示されないことを検証する。
+時刻情報の出典は小山市の公式資料です。本プロジェクトは小山市、バス運行事業者、小山工業高等専門学校の公式サービスではありません。
