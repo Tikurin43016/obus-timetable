@@ -5,3 +5,17 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   Strict-Transport-Security: max-age=31536000
+
+/sitemap.xml
+  Content-Type: application/xml; charset=utf-8
+  Cache-Control: public, max-age=0, must-revalidate
+
+/robots.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=0, must-revalidate
+
+/obus_2026_kosen_s2k.pdf
+  Link: <https://nitocbus.pages.dev/obus_2026_kosen_s2k>; rel="canonical"
+
+/obus_2026_kosen_k2s.pdf
+  Link: <https://nitocbus.pages.dev/obus_2026_kosen_k2s>; rel="canonical"

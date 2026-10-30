@@ -1,4 +1,4 @@
-# おーバス 高専時刻表
+# NITOCバスナビ
 
 2026年10月1日改正対応。
 
@@ -25,3 +25,40 @@ node scripts/generate-timetables.mjs
 ```
 
 ブラウザ上では従来通りJavaScriptでも同じデータを読み込み、表示を更新します。静的HTMLとJSONの内容がずれないように、生成後のHTMLもまとめてコミットしてください。
+
+## 印刷用PDFの生成
+
+印刷用の往路・復路PDFは `obus_2026_kosen.json` を唯一の時刻データとして自動生成します。
+表題とQRコードのリンクは `NITOCバスナビ` / `https://nitocbus.pages.dev/` に統一し、A4縦1枚に52便・51便を掲載しています。
+復路は高専正門からの出発目安と実際の停留所発車時刻を区別して掲載します。
+
+- 生成スクリプト：`scripts/generate-pdfs.py`
+- 実行方法：`python scripts/generate-pdfs.py`（`weasyprint`、`qrcode[pil]`、日本語フォントが必要）
+- GitHub Actions：`.github/workflows/build-pdfs.yml`。時刻JSONまたはスクリプト更新時にPDFを再生成して当該ブランチへコミットします。
+
+## 検索向けの設定
+
+- 公開URLは `https://nitocbus.pages.dev/`。HTMLのcanonical・OGP・内部リンク・sitemapはCloudflare Pagesの拡張子なしURLに揃えます。
+- ページの内容を変更したときは、`sitemap.xml` の該当URLの `lastmod` を実際の更新日に変更してください。時刻表の改正日とは別です。変更のないページや単なる再デプロイでは更新しません。
+- PDFのcanonicalは `_headers` で対応するHTMLを指定しています。PDFのダウンロード・印刷は従来どおり利用できます。
+- ルートの `404.html` は、存在しないURLにトップページを返すSPAフォールバックを防ぐために必要です。404ページはサイトマップに含めません。
+- Search Consoleの確認用HTMLはそのまま維持します。Googleの再取得・検索表示への反映状況はSearch Consoleで確認してください。
+- サイトマップ送信先は新サイトのURLプレフィックスプロパティ `https://nitocbus.pages.dev/`。同プロパティの「サイトマップ」で `sitemap.xml` を送信します。サイトマップXML自体のインデックス登録リクエストは不要です。
+- サイトマップとrobots.txtは配信形式を `_headers` で明示し、キャッシュを再検証させます。旧サイトの転送では、この2ファイルに移転案内用の `?moved=obuskosen` を付けません。
+
+## NITOCバスナビへの移行（2026年10月）
+
+- 新URL：`https://nitocbus.pages.dev/`（Cloudflare Pagesの新規プロジェクト名 `nitocbus` でデプロイすること。実際の利用可否・デプロイの成功はCloudflare側で確認）。
+- 旧URL：`https://o-bus-kosen.pages.dev/`。**古いPagesプロジェクトは削除しない**。
+- 同じGitHubリポジトリに新Pagesプロジェクトを接続し、このブランチで動作確認したうえで、`main` を新サイトの本番ブランチにする。
+- 旧Pagesプロジェクトの本番ブランチを `chore/legacy-301-redirect` に変更すると、同ブランチの `_redirects` により、旧URLを同じパスの新URLへ301転送できる（Cloudflare Pages > Settings > Builds & deployments > Production branch）。
+- **切替順序：新サイト公開確認 → 旧プロジェクトの本番ブランチ変更 → 301確認。** 先に旧側を転送しないこと。
+- Search Consoleで新URLをプロパティ登録し、サイトマップ `https://nitocbus.pages.dev/sitemap.xml` を送信する。旧URLの301は維持する。
+- リポジトリ名、時刻データ、PDFのファイルパスは互換性のため変更しない。
+
+## 旧URLからの移転案内
+
+- 旧サイトの `_redirects` は新URLへ301転送し、`?moved=obuskosen` を付ける（旧プロジェクト専用ブランチ `chore/legacy-301-redirect`）。
+- 新サイトの全HTMLページはマーカーを検知した場合だけ案内ダイアログを表示する。ブラウザのアドレス欄からマーカーを消し、閉じたことを `localStorage` に記録して同じブラウザ環境では次回以降表示しない。保存が使えない場合のみ `sessionStorage` で同一タブ内の再表示を抑制する。直接アクセス時は表示しない。
+- PDFに直接転送された場合、ブラウザのPDFビューアにはHTMLのダイアログを表示できない。PDFリンクは同じパスで転送され、閲覧機能は維持する。
+- 切替前に旧サイト→新サイトの各HTML・PDFの転送、案内の閉じる動作、通常アクセスでは表示されないことを検証する。

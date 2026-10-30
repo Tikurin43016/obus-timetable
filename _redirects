@@ -1,0 +1,8 @@
+# Legacy .html URLs -> canonical Cloudflare Pages routes (permanent).
+# Keep in sync with canonical links, internal links, and sitemap.xml.
+/index.html / 301
+/obus_2026_kosen_s2k.html /obus_2026_kosen_s2k 301
+/obus_2026_kosen_k2s.html /obus_2026_kosen_k2s 301
+/departure/index.html /departure/ 301
+/departure/k2s/index.html /departure/k2s/ 301
+/watch/index.html /watch/ 301

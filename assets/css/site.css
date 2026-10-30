@@ -48,6 +48,7 @@ a{color:inherit}
 }
 .departure-link:hover{background:#242980}
 .site-title{margin:0;line-height:1.15}
+.site-intro{margin:0 0 14px;color:var(--muted);font-size:13px;line-height:1.5}
 .brand{
   color:var(--navy);
   font-size:clamp(24px,3.4vw,34px);
@@ -138,11 +139,15 @@ a{color:inherit}
   margin-top:16px;
   padding-top:11px;
   border-top:1px solid var(--line);
-  color:#8a9298;
+  color:var(--muted);
   font-size:11px;
   line-height:1.6
 }
 .site-footer p{margin:0}
+.access-guide{margin-bottom:6px}
+.access-guide summary{width:fit-content;cursor:pointer;font-size:12px;font-weight:700}
+.access-guide[open] summary{margin-bottom:6px}
+.access-guide[open] p{max-width:70em;margin:6px 0;font-size:12px;line-height:1.8}
 a:focus-visible{outline:3px solid rgb(23 26 103 / 24%);outline-offset:3px}
 
 @media(max-width:700px){
@@ -152,6 +157,7 @@ a:focus-visible{outline:3px solid rgb(23 26 103 / 24%);outline-offset:3px}
     padding:18px 0 16px
   }
   .site-header{margin-bottom:14px}
+  .site-intro{margin-bottom:10px;font-size:12px}
   .header-actions{gap:6px}
   .departure-link{min-height:29px;padding:5px 9px;font-size:11px}
   .brand{font-size:24px}
