@@ -2,7 +2,7 @@ name: Build NITOC timetable PDFs
 on:
   push:
     branches:
-      - feat/nitocbus-rebrand
+      - main
     paths:
       - obus_2026_kosen.json
       - scripts/generate-pdfs.py
