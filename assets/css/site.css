@@ -2,11 +2,11 @@
   color-scheme:light;
   --navy:#171a67;
   --ink:#15202b;
-  --muted:#6f7880;
-  --line:#e3e7ea;
-  --page:#fbfcfd;
+  --muted:#5f6870;
+  --line:#d9dee2;
+  --page:#f6f7f9;
   --surface:#fff;
-  --surface-soft:#fafbfc;
+  --surface-soft:#f1f3f5;
   --red:#d81424;
   font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN",Meiryo,system-ui,sans-serif;
 }
@@ -14,178 +14,55 @@
 html{background:var(--page);color:var(--ink)}
 body{margin:0;min-width:320px;min-height:100vh;background:var(--page)}
 a{color:inherit}
-.landing{
-  display:flex;
-  width:min(980px,calc(100% - 40px));
-  margin:auto;
-  padding:22px 0 22px;
-  flex-direction:column
-}
-.site-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:16px;
-  margin-bottom:18px
-}
-.header-actions{
-  display:flex;
-  align-items:center;
-  gap:9px
-}
-.departure-link{
-  display:inline-flex;
-  align-items:center;
-  min-height:31px;
-  padding:6px 11px;
-  border-radius:999px;
-  background:var(--navy);
-  color:#fff;
-  font-size:12px;
-  font-weight:800;
-  text-decoration:none;
-  white-space:nowrap
-}
-.departure-link:hover{background:#242980}
+.landing{display:flex;width:min(980px,calc(100% - 40px));margin:auto;padding:30px 0 24px;flex-direction:column}
+.site-header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
+.header-actions{display:flex;align-items:center;gap:8px}
+.departure-link{display:inline-flex;align-items:center;min-height:32px;padding:6px 12px;border:1px solid var(--navy);border-radius:4px;background:var(--navy);color:#fff;font-size:12px;font-weight:800;text-decoration:none;white-space:nowrap}
+.departure-link:hover{background:#fff;color:var(--navy)}
 .site-title{margin:0;line-height:1.15}
-.site-intro{margin:0 0 14px;color:var(--muted);font-size:13px;line-height:1.5}
-.brand{
-  color:var(--navy);
-  font-size:clamp(24px,3.4vw,34px);
-  font-weight:850;
-  letter-spacing:-.02em;
-  line-height:1.15;
-  text-decoration:none
-}
-.revision-badge{
-  padding:7px 10px;
-  border:1px solid var(--line);
-  border-radius:999px;
-  background:var(--surface);
-  color:var(--muted);
-  font-size:12px;
-  white-space:nowrap
-}
-.direction-split{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  min-height:360px;
-  border-top:1px solid var(--line);
-  border-bottom:1px solid var(--line)
-}
-.direction-panel{
-  display:grid;
-  min-width:0;
-  grid-template-rows:minmax(0,1fr) auto
-}
-.direction-panel+.direction-panel{border-left:1px solid var(--line)}
-.direction-main{
-  display:flex;
-  min-width:0;
-  padding:28px 24px;
-  flex-direction:column;
-  align-items:center;
-  justify-content:space-evenly;
-  gap:0;
-  text-align:center;
-  text-decoration:none
-}
-.direction-main:hover{background:var(--surface)}
-.route-visual{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:12px;
-  min-width:0
-}
-.place{
-  font-size:clamp(23px,3vw,32px);
-  font-weight:850;
-  letter-spacing:-.03em;
-  white-space:nowrap
-}
-.route-arrow{
-  flex:0 0 auto;
-  color:var(--navy);
-  font-size:28px;
-  font-weight:750;
-  line-height:1
-}
-.direction-action{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  color:var(--navy);
-  font-size:14px;
-  font-weight:800
-}
+.site-intro{margin:0 0 14px;color:var(--muted);font-size:13px;line-height:1.6}
+.brand{color:var(--navy);font-size:clamp(24px,3.4vw,34px);font-weight:850;letter-spacing:-.02em;line-height:1.15;text-decoration:none}
+.revision-badge{padding:6px 10px;border:1px solid var(--line);border-radius:4px;background:var(--surface);color:var(--muted);font-size:12px;white-space:nowrap}
+.direction-split{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));min-height:360px;gap:16px}
+.direction-panel{display:grid;min-width:0;grid-template-rows:minmax(0,1fr) auto;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface)}
+.direction-panel:hover{border-color:var(--navy)}
+.direction-main{display:flex;min-width:0;padding:28px 24px;flex-direction:column;align-items:center;justify-content:space-evenly;text-align:center;text-decoration:none;background:var(--surface);border-top:4px solid var(--navy)}
+.direction-main:hover{background:var(--surface-soft)}
+.route-visual{display:flex;align-items:center;justify-content:center;gap:12px;min-width:0}
+.place{font-size:clamp(23px,3vw,32px);font-weight:850;letter-spacing:-.03em;white-space:nowrap}
+.route-arrow{flex:0 0 auto;color:var(--navy);font-size:28px;font-weight:750;line-height:1}
+.direction-action{display:inline-flex;align-items:center;gap:8px;color:var(--navy);font-size:14px;font-weight:800}
 .direction-action b{font-size:19px}
-.pdf-link{
-  display:grid;
-  grid-template-columns:auto 1fr auto;
-  align-items:center;
-  gap:9px;
-  min-height:64px;
-  padding:14px 20px;
-  border-top:1px solid var(--line);
-  background:var(--surface-soft);
-  text-decoration:none
-}
+.pdf-link{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:9px;min-height:64px;padding:14px 20px;border-top:1px solid var(--line);background:var(--surface-soft);text-decoration:none}
 .pdf-link span{font-size:14px;font-weight:800}
-.pdf-link small{color:#8a9298;font-size:12px}
-.pdf-link b{color:#8a9298;font-size:15px}
+.pdf-link small{color:var(--muted);font-size:12px}
+.pdf-link b{color:var(--muted);font-size:15px}
+.pdf-link:hover{background:var(--surface)}
 .pdf-link:hover span{color:var(--red)}
-.site-footer{
-  margin-top:16px;
-  padding-top:11px;
-  border-top:1px solid var(--line);
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.6
-}
+.site-footer{margin-top:16px;padding-top:11px;border-top:1px solid var(--line);color:var(--muted);font-size:11px;line-height:1.6}
 .site-footer p{margin:0}
 .access-guide{margin-bottom:6px}
 .access-guide summary{width:fit-content;cursor:pointer;font-size:12px;font-weight:700}
 .access-guide[open] summary{margin-bottom:6px}
 .access-guide[open] p{max-width:70em;margin:6px 0;font-size:12px;line-height:1.8}
-a:focus-visible{outline:3px solid rgb(23 26 103 / 24%);outline-offset:3px}
+a:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
 
 @media(max-width:700px){
-  .landing{
-    width:calc(100% - 24px);
-    min-height:100svh;
-    padding:18px 0 16px
-  }
+  .landing{width:calc(100% - 24px);min-height:100svh;padding:18px 0 16px}
   .site-header{margin-bottom:14px}
   .site-intro{margin-bottom:10px;font-size:12px}
   .header-actions{gap:6px}
-  .departure-link{min-height:29px;padding:5px 9px;font-size:11px}
+  .departure-link{min-height:30px;padding:5px 9px;font-size:11px}
   .brand{font-size:24px}
   .revision-badge{font-size:10px}
-  .direction-split{
-    flex:1 1 auto;
-    grid-template-columns:1fr;
-    grid-template-rows:repeat(2,minmax(0,1fr));
-    min-height:0
-  }
-  .direction-panel+.direction-panel{
-    border-top:1px solid var(--line);
-    border-left:0
-  }
-  .direction-main{
-    padding:12px 10px;
-    justify-content:space-evenly;
-    gap:0
-  }
+  .direction-split{flex:1 1 auto;grid-template-columns:1fr;grid-template-rows:repeat(2,minmax(0,1fr));min-height:0;gap:12px}
+  .direction-main{padding:12px 10px}
   .route-visual{gap:8px}
   .place{font-size:clamp(24px,7vw,31px)}
   .route-arrow{font-size:26px}
   .direction-action{font-size:14px}
   .direction-action b{font-size:18px}
-  .pdf-link{
-    min-height:78px;
-    padding:16px 20px
-  }
+  .pdf-link{min-height:78px;padding:16px 20px}
   .pdf-link span{font-size:16px}
   .pdf-link small{font-size:12px}
   .pdf-link b{font-size:18px}
