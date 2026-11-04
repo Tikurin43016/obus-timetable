@@ -77,16 +77,28 @@ function renderTimetable(data,trips){
   timetableRoot.replaceChildren(fragment);
 }
 
-function updateCurrentHour(){
-  const hour=Number(new Intl.DateTimeFormat("en-US",{
+function nowInTokyo(){
+  const parts=new Intl.DateTimeFormat("en-US",{
     timeZone:"Asia/Tokyo",
     hour:"2-digit",
+    minute:"2-digit",
     hourCycle:"h23"
-  }).format(new Date()));
+  }).formatToParts(new Date());
+  const hour=Number(parts.find(part=>part.type==="hour").value);
+  const minute=Number(parts.find(part=>part.type==="minute").value);
+  return {hour,minutes:hour*60+minute};
+}
+
+function updateCurrentHour(){
+  const {hour,minutes}=nowInTokyo();
 
   for(const row of timetableRoot.querySelectorAll(".hour-row")){
     const rowHour=Number(row.querySelector(".hour")?.textContent);
     row.classList.toggle("current-hour",rowHour===hour);
+  }
+
+  for(const item of timetableRoot.querySelectorAll(".trip[data-time]")){
+    item.classList.toggle("is-past",toMin(item.dataset.time)<minutes);
   }
 }
 
@@ -100,6 +112,7 @@ function createTrip(data,trip){
   const item=document.createElement("div");
   item.className=showStop?"trip has-stop":"trip";
   item.dataset.route=trip.route_id;
+  item.dataset.time=trip.display_time;
   item.setAttribute("role","listitem");
   item.setAttribute(
     "aria-label",
