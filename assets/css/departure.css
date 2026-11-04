@@ -52,7 +52,7 @@ a{color:inherit}
   align-items:stretch;
   min-height:120px;
   border-bottom:3px solid var(--line-strong);
-  background:var(--navy);
+  background:radial-gradient(circle at 50% 0%,rgb(67 77 165 / 28%),transparent 50%),var(--navy);
 }
 
 .station-heading,
@@ -85,6 +85,7 @@ a{color:inherit}
   text-align:center;
   text-decoration:none;
   white-space:nowrap;
+  transition:background .18s ease,border-color .18s ease
 }
 
 .switch-link{
@@ -233,10 +234,12 @@ a{color:inherit}
 .departure-row{
   min-height:0;
   border-bottom:2px solid #252a31;
-  background:linear-gradient(180deg,#080a0c,#050607);
+  background:linear-gradient(180deg,#0b0e12,#050607);
+  transition:background .18s ease
 }
 
 .departure-row:last-child{border-bottom:0}
+.departure-row:hover{background:linear-gradient(90deg,#11151b,#080a0d)}
 
 .departure-cell{
   display:flex;
@@ -543,4 +546,3 @@ a:focus-visible{
   .notice-track{animation:none!important;transform:none!important}
   .notice-copy[aria-hidden="true"]{display:none}
 }
-

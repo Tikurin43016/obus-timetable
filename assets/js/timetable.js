@@ -22,6 +22,8 @@ async function main(){
   const trips=data[direction].slice().sort((a,b)=>toMin(a.display_time)-toMin(b.display_time));
   renderTimetable(data,trips);
   renderLegend(data,trips);
+  updateCurrentHour();
+  window.setInterval(updateCurrentHour,60000);
 }
 
 async function loadData(){
@@ -73,6 +75,19 @@ function renderTimetable(data,trips){
   }
 
   timetableRoot.replaceChildren(fragment);
+}
+
+function updateCurrentHour(){
+  const hour=Number(new Intl.DateTimeFormat("en-US",{
+    timeZone:"Asia/Tokyo",
+    hour:"2-digit",
+    hourCycle:"h23"
+  }).format(new Date()));
+
+  for(const row of timetableRoot.querySelectorAll(".hour-row")){
+    const rowHour=Number(row.querySelector(".hour")?.textContent);
+    row.classList.toggle("current-hour",rowHour===hour);
+  }
 }
 
 function createTrip(data,trip){
