@@ -89,7 +89,7 @@ function syncDirection(){
   roots.switch.textContent=direction==='K2S'?'高専方面に切り替え':'駅方面に切り替え';
   roots.walk.hidden=direction!=='K2S';
   roots.full.href='../obus_2026_kosen_'+direction.toLowerCase()+'.html';
-  document.title=(direction==='K2S'?'駅方面':'高専方面')+'｜小さい画面用';
+  document.title=(direction==='K2S'?'駅方面':'高専方面')+'｜時計用 おーバス';
 }
 function update(){
   const now=getNow(),key=direction+dateKey(now)+now.hour+':'+now.minute;
