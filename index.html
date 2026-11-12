@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f1115" media="(prefers-color-scheme: dark)">
   <meta name="description" content="【2026年10月1日改正】小山高専と小山駅東口を結ぶおーバスの時刻表。高岳線・城東中久喜線・桑東部絹路線の行き・帰りをまとめて確認。PDF版も掲載。">
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./assets/css/site.css">
@@ -28,6 +29,7 @@
   </script>
   <link rel="stylesheet" href="./assets/css/migration-notice.css">
   <script defer src="./assets/js/migration-notice.js"></script>
+  <script defer src="./assets/js/next-line.js"></script>
 </head>
 <body>
   <main class="landing">
@@ -40,6 +42,7 @@
     </header>
 
     <p class="site-intro">小山駅東口 ↔ 小山高専のバス時刻表（非公式）</p>
+    <p class="next-line" id="next-line" hidden></p>
 
     <nav class="direction-split" aria-label="時刻表の方向">
       <article class="direction-panel">
@@ -89,4 +92,3 @@
   </main>
 </body>
 </html>
-
