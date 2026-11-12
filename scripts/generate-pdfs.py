@@ -109,11 +109,11 @@ def page_html(data, direction):
         for num,name,color in ROUTES.values()
     )
     if direction == "S2K":
-        note = "時刻は小山駅東口の発車です。『入口』『正門』『中二』は高専側の停留所です。"
-        details = "高岳線は小山高専入口、城東中久喜線は高専正門です。桑東部絹路線は高専正門か中久喜二丁目です。"
+        note = "時刻は小山駅東口の発車時刻です。『入口』『正門』『中二』は、高専側で降りる停留所です。"
+        details = "高岳線は小山高専入口、城東中久喜線は高専正門が最寄りです。桑東部絹路線は高専正門か中久喜二丁目です。"
     else:
-        note = "表示は正門を出る目安です。下の『乗』は停留所の発車時刻です。"
-        details = "徒歩は、小山高専入口 6分、中久喜二丁目 9分、高専正門 0分を引いています。"
+        note = "表示している時刻は、正門を出発する目安です。下の『乗』は、各停留所の発車時刻です。"
+        details = "小山高専入口は6分、中久喜二丁目は9分、高専正門は0分の徒歩時間を差し引いています。"
     qr = qr_uri("https://nitocbus.pages.dev/" + basename)
     return f'''<!doctype html><html lang="ja"><head><meta charset="utf-8"><title>NITOCバスナビ｜{heading}</title><style>{CSS}</style></head><body>
     <div class="brand-row"><div class="brand">NITOCバスナビ</div><div class="nonofficial">非公式・個人制作</div></div>
@@ -122,8 +122,8 @@ def page_html(data, direction):
     <div class="table-head"><span class="label">{label}</span><span class="explain">時｜分・路線番号・高専側の停留所</span></div>
     <div class="timetable">{rows}</div><div class="legend">{legend}</div>
     <div class="notes"><div class="notes-text"><p class="strong">{note}</p><p>{details}</p>
-      <p>◆ 月〜金。土・日と12/29〜1/3は運休。祝日は運行　※ 平日のみ。祝日は運休</p>
-      <p class="subtle">運休・変更・運賃・全線の時刻は小山市の公式を見てください。臨時の運行は入っていません。</p>
+      <p>◆ 月〜金運行（土・日と12/29〜1/3は運休。祝日は運行）　※ 平日のみ（祝日は運休）</p>
+      <p class="subtle">運休、変更、運賃、路線全体の時刻は小山市の公式情報を確認してください。臨時運行は反映していません。</p>
       </div><img class="qr" src="{qr}" alt="ウェブ版へのQRコード"></div>
     <div class="footer"><span>出典：小山市公式時刻表（高岳線／城東中久喜線／桑東部絹路線）</span><span class="url">nitocbus.pages.dev</span></div>
     </body></html>'''
