@@ -86,10 +86,10 @@ function tripCard(item,now,compact=false){
 function syncDirection(){
   roots.heading.textContent=direction==='K2S'?'小山駅方面':'高専方面';
   roots.heading.setAttribute('aria-label',direction==='K2S'?'高専正門から小山駅方面':'小山駅東口から高専方面');
-  roots.switch.textContent=direction==='K2S'?'高専方面へ':'駅方面へ';
+  roots.switch.textContent=direction==='K2S'?'高専方面に切り替え':'駅方面に切り替え';
   roots.walk.hidden=direction!=='K2S';
   roots.full.href='../obus_2026_kosen_'+direction.toLowerCase()+'.html';
-  document.title=(direction==='K2S'?'駅方面':'高専方面')+'｜腕時計向け';
+  document.title=(direction==='K2S'?'駅方面':'高専方面')+'｜小さい画面用';
 }
 function update(){
   const now=getNow(),key=direction+dateKey(now)+now.hour+':'+now.minute;
