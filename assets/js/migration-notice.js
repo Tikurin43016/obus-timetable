@@ -44,10 +44,10 @@
 
   const explanation = document.createElement("p");
   explanation.id = "migration-notice-description";
-  explanation.textContent = "「おーバス 高専時刻表」は、「NITOCバスナビ」に名前とURLを変えました。";
+  explanation.textContent = "「おーバス 高専時刻表」の名前とURLを、「NITOCバスナビ」に変更しました。";
 
   const apology = document.createElement("p");
-  apology.textContent = "急な案内ですみません。古いURLも、当面はそのまま開けます。ブックマークは、よければ新しいURLに変えてください。";
+  apology.textContent = "急なご案内で申し訳ありません。古いURLも当面はそのまま使えます。ブックマークを新しいURLに変えていただけると助かります。";
 
 
   const address = document.createElement("p");
