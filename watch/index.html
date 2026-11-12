@@ -4,17 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#ffffff">
-  <meta name="description" content="Galaxy Watchなどの小さな画面向けに、小山高専と小山駅東口を結ぶおーバスの次の便を案内。行き・帰りを切り替えできます。時刻表に基づく案内で、実際の遅延は反映していません。">
+  <meta name="description" content="腕時計など小さい画面向けに、小山高専と小山駅東口のおーバスの次の便を出します。行きと帰りを切り替えられます。時刻表どおりで、遅れは入っていません。">
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/css/watch.css?v=20261007-dot-center">
-  <script defer src="../assets/js/watch.js?v=20261007-security"></script>
-  <title>小山高専のバス発車案内・時計用｜NITOCバスナビ</title>
+  <script defer src="../assets/js/watch.js?v=20261112-copy"></script>
+  <title>小山高専のバス発車案内・腕時計向け｜NITOCバスナビ</title>
   <link rel="canonical" href="https://nitocbus.pages.dev/watch/">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ja_JP">
   <meta property="og:site_name" content="NITOCバスナビ">
-  <meta property="og:title" content="小山高専のバス発車案内・時計用｜NITOCバスナビ">
-  <meta property="og:description" content="Galaxy Watchなどの小さな画面向けに、小山高専と小山駅東口を結ぶおーバスの次の便を案内。行き・帰りを切り替えできます。時刻表に基づく案内で、実際の遅延は反映していません。">
+  <meta property="og:title" content="小山高専のバス発車案内・腕時計向け｜NITOCバスナビ">
+  <meta property="og:description" content="腕時計など小さい画面向けに、小山高専と小山駅東口のおーバスの次の便を出します。行きと帰りを切り替えられます。時刻表どおりで、遅れは入っていません。">
   <meta property="og:url" content="https://nitocbus.pages.dev/watch/">
   <link rel="stylesheet" href="../assets/css/migration-notice.css">
   <script defer src="../assets/js/migration-notice.js"></script>
@@ -29,7 +29,7 @@
         <p class="message">時刻を読み込み中…</p>
       </div>
       <nav class="watch-controls" aria-label="方向切り替え">
-        <button id="switch-direction" type="button">駅方面に切替</button>
+        <button id="switch-direction" type="button">駅方面へ</button>
       </nav>
     </section>
     <section class="following-screen" aria-labelledby="following-heading">
@@ -37,11 +37,11 @@
       <div id="following-trips"></div>
     </section>
     <footer class="watch-footer">
-      <p>Galaxy WatchではSamsungブラウザでこのページを開き、ブックマークに登録すると次回から開きやすくなります。</p>
+      <p>Galaxy Watchでは、Samsungブラウザで開いてブックマークすると、次から開きやすいです。</p>
       <p class="watch-now">現在 <time id="clock">--:--</time><span id="day-label"></span></p>
       <p id="revision">2026年10月1日改正</p>
-      <p>非公式・時刻表に基づく案内です。遅延・臨時運休は反映していません。</p>
-      <p id="walk-note" hidden>帰りの大きな時刻は正門出発目安です。のりばまでの徒歩時間をバス時刻から差し引いています。</p>
+      <p>非公式です。遅れや臨時の運休は入っていません。</p>
+      <p id="walk-note" hidden>帰りの大きい時刻は、正門を出る目安です。のりばまでの徒歩を引いています。</p>
       <p>出典：小山市公式時刻表（高岳線・城東中久喜線・桑東部絹路線）</p>
       <a id="full-timetable" href="../obus_2026_kosen_s2k">時刻表を見る</a>
       <a href="../">トップへ</a>
