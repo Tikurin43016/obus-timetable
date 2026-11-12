@@ -54,10 +54,9 @@ a{color:inherit}
 .route-arrow{flex:0 0 auto;color:var(--navy);font-size:28px;font-weight:750;line-height:1}
 .direction-action{display:inline-flex;align-items:center;gap:8px;color:var(--navy);font-size:14px;font-weight:800}
 .direction-action b{font-size:19px}
-.pdf-link{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:9px;min-height:64px;padding:14px 20px;border-top:1px solid var(--line);background:var(--surface-soft);text-decoration:none}
+.pdf-link{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:56px;padding:14px 20px;border-top:1px solid var(--line);background:var(--surface-soft);text-decoration:none}
 .pdf-link span{font-size:14px;font-weight:800}
-.pdf-link small{color:var(--muted);font-size:12px}
-.pdf-link b{color:var(--muted);font-size:15px}
+.pdf-link b{color:var(--muted);font-size:15px;margin-left:auto}
 .pdf-link:hover{background:var(--surface)}
 .pdf-link:hover span{color:var(--red)}
 .site-footer{margin-top:16px;padding-top:11px;border-top:1px solid var(--line);color:var(--muted);font-size:11px;line-height:1.6}
@@ -83,9 +82,8 @@ a:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
   .route-arrow{font-size:26px}
   .direction-action{font-size:14px}
   .direction-action b{font-size:18px}
-  .pdf-link{min-height:78px;padding:16px 20px}
+  .pdf-link{min-height:64px;padding:16px 20px}
   .pdf-link span{font-size:16px}
-  .pdf-link small{font-size:12px}
   .pdf-link b{font-size:18px}
   .site-footer{margin-top:12px;padding-top:9px;font-size:10px}
 }
