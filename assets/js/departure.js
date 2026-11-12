@@ -170,11 +170,11 @@ function renderNotice(now){
   const isPreview=Boolean(effective&&current<effective);
 
   const normalText=direction==="K2S"
-    ?"正門出発目安は各停留所の時刻と徒歩時間から算出した参考時刻です。　Gate departure times are estimates including walking time."
-    :"時刻表に基づく案内です。実際の運行状況は反映していません。　Based on the timetable. Real-time service information is not shown.";
+    ?"正門を出る目安です。停留所の時刻から、のりばまでの徒歩を引いています。　Estimated time to leave the gate, after walking."
+    :"時刻表の発車時刻です。遅れや今の位置は分かりません。　Timetable times only. Delays are not shown.";
 
   const text=(isPreview
-    ?"プレビュー表示："+formatRevision(effective)+"の時刻表に基づきます。　Preview: Based on the timetable revised on "+formatRevisionEnglish(effective)+"."
+    ?"プレビューです。"+formatRevision(effective)+"の時刻表です。　Preview timetable from "+formatRevisionEnglish(effective)+"."
     :normalText)+"　"+SOURCE_NOTICE;
 
   noticeTrack.classList.toggle("preview",isPreview);
@@ -328,7 +328,7 @@ function getMiddleDisplay(trip,stop){
     return {
       primary:stop.name??trip.college_stop_id,
       secondary:walk>0
-        ?"バス "+boardingTime+"・正門から徒歩約"+walk+"分"
+        ?"バス "+boardingTime+"、正門から徒歩"+walk+"分"
         :"バス "+boardingTime
     };
   }
