@@ -3,6 +3,7 @@ const direction=document.body.dataset.direction==="K2S"?"K2S":"S2K";
 const MAX_ROWS=5;
 const SOURCE_NOTICE="出典：小山市公式時刻表（高岳線・城東中久喜線・桑東部絹路線）。";
 const REFRESH_MS=1000;
+const DATA_REVALIDATE_MS=5*60*1000;
 
 const DESTINATION_DISPLAY={
   taka:{
@@ -35,6 +36,8 @@ const noticeTrack=document.querySelector("#notice-track");
 const revisionRoot=document.querySelector("#revision");
 let timetableData=null;
 let sortedTrips=[];
+let lastDataRequestAt=0;
+let dataRefreshInFlight=null;
 
 main().catch(error=>{
   console.error(error);
@@ -42,24 +45,46 @@ main().catch(error=>{
 });
 
 async function main(){
-  timetableData=await loadData();
-  if(!Array.isArray(timetableData[direction])) throw new Error("Invalid timetable data");
-
-  sortedTrips=timetableData[direction]
-    .slice()
-    .sort((a,b)=>toMinutes(a.display_time)-toMinutes(b.display_time));
-
-  if(timetableData.effective_from){
-    revisionRoot.textContent=formatRevision(timetableData.effective_from);
-  }
-
-  update();
+  await revalidateData(true);
   window.setInterval(update,REFRESH_MS);
-  document.addEventListener("visibilitychange",()=>{
-    if(!document.hidden) update();
-  });
+  const onResume=()=>{
+    if(document.hidden) return;
+    update();
+    revalidateData().catch(error=>console.error("Timetable revalidation failed",error));
+  };
+  document.addEventListener("visibilitychange",onResume);
+  window.addEventListener("pageshow",onResume);
   window.addEventListener("resize",updateNoticeSpeed);
   updateNoticeSpeed();
+}
+
+async function revalidateData(force=false){
+  if(dataRefreshInFlight) return dataRefreshInFlight;
+  if(!force&&Date.now()-lastDataRequestAt<DATA_REVALIDATE_MS) return;
+  lastDataRequestAt=Date.now();
+
+  const request=(async()=>{
+    const loaded=await loadData();
+    if(!Array.isArray(loaded?.[direction])) throw new Error("Invalid timetable data");
+
+    const trips=loaded[direction]
+      .slice()
+      .sort((a,b)=>toMinutes(a.display_time)-toMinutes(b.display_time));
+    timetableData=loaded;
+    sortedTrips=trips;
+
+    if(loaded.effective_from){
+      revisionRoot.textContent=formatRevision(loaded.effective_from);
+    }
+    update();
+  })();
+
+  dataRefreshInFlight=request;
+  try{
+    await request;
+  }finally{
+    dataRefreshInFlight=null;
+  }
 }
 
 async function loadData(){

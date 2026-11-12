@@ -1,5 +1,6 @@
 "use strict";
 (()=>{
+const DATA_REVALIDATE_MS=5*60*1000;
 const HOLIDAYS=new Set([
   "2026-01-01","2026-01-12","2026-02-11","2026-02-23","2026-03-20",
   "2026-04-29","2026-05-03","2026-05-04","2026-05-05","2026-05-06",
@@ -22,6 +23,7 @@ let savedDirection;
 try{savedDirection=localStorage.getItem('obus-watch-direction');}catch{}
 let direction=(params.get('direction')??savedDirection)==='K2S'?'K2S':'S2K';
 let data=null,timer=null,lastRender='';
+let lastDataRequestAt=0,dataRequestInFlight=null;
 const formatter=new Intl.DateTimeFormat('en-US',{
   timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit',
   hour:'2-digit',minute:'2-digit',hourCycle:'h23'
@@ -106,23 +108,43 @@ function startTimer(){
   update();
   if(!document.hidden)timer=setInterval(update,15000);
 }
-async function loadData(){
-  roots.next.replaceChildren(element('p','message','時刻を読み込み中…'));
-  const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),8000);
+async function loadData({silent=false}={}){
+  if(dataRequestInFlight) return dataRequestInFlight;
+  lastDataRequestAt=Date.now();
+
+  const request=(async()=>{
+    if(!silent)roots.next.replaceChildren(element('p','message','時刻を読み込み中…'));
+    const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),8000);
+    try{
+      const response=await fetch('../obus_2026_kosen.json',{signal:controller.signal,cache:'no-cache'});
+      if(!response.ok)throw Error('HTTP '+response.status);
+      const loaded=await response.json();
+      if(!Array.isArray(loaded.S2K)||!Array.isArray(loaded.K2S)||!loaded.calendars||!loaded.routes||!loaded.stops)throw Error('Invalid timetable');
+      for(const key of ['S2K','K2S'])loaded[key].sort((a,b)=>minutes(a.display_time)-minutes(b.display_time));
+      data=loaded;lastRender='';
+      document.querySelector('#revision').textContent=data.effective_from.replace(/^(\d+)-(\d+)-(\d+)$/,(_,y,m,d)=>y+'年'+Number(m)+'月'+Number(d)+'日改正');
+      startTimer();
+    }catch(error){
+      console.error(error);
+      if(!data){
+        const retry=element('button','','再読み込み');retry.type='button';retry.addEventListener('click',()=>loadData());
+        roots.next.replaceChildren(element('p','message','時刻を読み込めませんでした'),retry);
+      }
+    }finally{clearTimeout(timeout);}
+  })();
+
+  dataRequestInFlight=request;
   try{
-    const response=await fetch('../obus_2026_kosen.json',{signal:controller.signal,cache:'no-cache'});
-    if(!response.ok)throw Error('HTTP '+response.status);
-    const loaded=await response.json();
-    if(!Array.isArray(loaded.S2K)||!Array.isArray(loaded.K2S)||!loaded.calendars||!loaded.routes||!loaded.stops)throw Error('Invalid timetable');
-    for(const key of ['S2K','K2S'])loaded[key].sort((a,b)=>minutes(a.display_time)-minutes(b.display_time));
-    data=loaded;lastRender='';
-    document.querySelector('#revision').textContent=data.effective_from.replace(/^(\d+)-(\d+)-(\d+)$/,(_,y,m,d)=>y+'年'+Number(m)+'月'+Number(d)+'日改正');
-    startTimer();
-  }catch(error){
-    console.error(error);
-    const retry=element('button','','再読み込み');retry.type='button';retry.addEventListener('click',loadData);
-    roots.next.replaceChildren(element('p','message','時刻を読み込めませんでした'),retry);
-  }finally{clearTimeout(timeout);}
+    await request;
+  }finally{
+    dataRequestInFlight=null;
+  }
+}
+function onResume(){
+  startTimer();
+  if(!document.hidden&&Date.now()-lastDataRequestAt>=DATA_REVALIDATE_MS){
+    loadData({silent:Boolean(data)});
+  }
 }
 roots.switch.addEventListener('click',()=>{
   direction=direction==='S2K'?'K2S':'S2K';
@@ -130,7 +152,7 @@ roots.switch.addEventListener('click',()=>{
   const url=new URL(location.href);url.searchParams.set('direction',direction);history.replaceState(null,'',url);
   syncDirection();update();
 });
-document.addEventListener('visibilitychange',startTimer);
-window.addEventListener('pageshow',startTimer);
+document.addEventListener('visibilitychange',onResume);
+window.addEventListener('pageshow',onResume);
 syncDirection();startTimer();loadData();
 })();
