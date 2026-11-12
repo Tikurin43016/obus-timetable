@@ -8,7 +8,7 @@ const data=JSON.parse(readFileSync(join(root,"obus_2026_kosen.json"),"utf8"));
 const STOP_LABELS={"gate":"正門","entrance":"入口","nakakuki2":"中二"};
 const ROUTE_ORDER=["taka","joto","kuwa"];
 const CALENDAR_MARKS={"daily":"","joto_weekday":"※","kuwa_mon_fri":"◆"};
-const CALENDAR_DESCRIPTIONS={"joto_weekday":"※ 平日のみ","kuwa_mon_fri":"◆ 月～金運行（土・日・12/29～1/3は運休）"};
+const CALENDAR_DESCRIPTIONS={"joto_weekday":"※ 平日のみ","kuwa_mon_fri":"◆ 月～金。土・日と12/29～1/3は運休"};
 function escapeHtml(v){return String(v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");}
 function renderTimetable(data,direction){
   const trips=[...data[direction]].sort((a,b)=>a.display_time.localeCompare(b.display_time));
@@ -42,9 +42,9 @@ function renderLegend(data,direction){
   function routeName(id){return `<span class="route-name" data-route="${escapeHtml(id)}">${escapeHtml(data.routes[id]?.name??id)}</span>`;}
   if(routeIds.length) addRow("路線",routeIds.map(id=>`<span class="legend-item route-key" data-route="${escapeHtml(id)}">${escapeHtml(data.routes[id]?.name??id)}</span>`));
   if(stopIds.length) addRow("停留所",stopIds.map(id=>item(`${STOP_LABELS[id]??id}＝${data.stops[id]?.name??id}`)));
-  if(direction==="K2S") addRow("補正時分",[item("各時刻は、のりばまでの徒歩時間として高専正門 0分、小山高専入口 6分、中久喜二丁目 9分を差し引いて表示しています。")]);
+  if(direction==="K2S") addRow("徒歩",[item("正門を出る目安です。徒歩を引いています。正門 0分、小山高専入口 6分、中久喜二丁目 9分。")]);
   if(calendarIds.length) addRow("運行日",calendarIds.map(id=>item(CALENDAR_DESCRIPTIONS[id])));
-  addRow("案内",[`<span class="legend-item">${routeName("taka")}は小山高専入口、${routeName("joto")}は高専正門を発着します。${routeName("kuwa")}は各便の停留所表示をご確認ください。</span>`]);
+  addRow("案内",[`<span class="legend-item">${routeName("taka")}は小山高専入口、${routeName("joto")}は高専正門です。${routeName("kuwa")}は便ごとの停留所を見てください。</span>`]);
   return rows.join("\n");
 }
 function updateBlock(html,start,end,body){
