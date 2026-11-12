@@ -4,7 +4,7 @@ const ROUTE_ORDER=["taka","joto","kuwa"];
 const CALENDAR_MARKS={daily:"",joto_weekday:"※",kuwa_mon_fri:"◆"};
 const CALENDAR_DESCRIPTIONS={
   joto_weekday:"※ 平日のみ",
-  kuwa_mon_fri:"◆ 月～金運行（土・日・12/29～1/3は運休）"
+  kuwa_mon_fri:"◆ 月～金。土・日と12/29～1/3は運休"
 };
 const timetableRoot=document.querySelector("#timetable");
 const legendRoot=document.querySelector("#legend");
@@ -12,7 +12,7 @@ const direction=document.body.dataset.direction;
 
 main().catch(error=>{
   console.error(error);
-  renderError("時刻表を読み込めませんでした。しばらくしてから再読み込みしてください。");
+  renderError("時刻表を読み込めませんでした。再読み込みしてください。");
 });
 
 async function main(){
@@ -179,9 +179,9 @@ function renderLegend(data,trips){
   if(direction==="K2S"){
     rows.push(
       legendRow(
-        "補正時分",
+        "徒歩",
         [legendItem(
-          "各時刻は、のりばまでの徒歩時間として高専正門 0分、小山高専入口 6分、中久喜二丁目 9分を差し引いて表示しています。"
+          "正門を出る目安です。徒歩を引いています。正門 0分、小山高専入口 6分、中久喜二丁目 9分。"
         )]
       )
     );
@@ -251,9 +251,9 @@ function noticeLegendItem(data){
     routeName("taka",data.routes.taka?.name??"高岳線"),
     "は小山高専入口、",
     routeName("joto",data.routes.joto?.name??"城東中久喜線"),
-    "は高専正門を発着します。",
+    "は高専正門です。",
     routeName("kuwa",data.routes.kuwa?.name??"桑東部絹路線"),
-    "は各便の停留所表示をご確認ください。"
+    "は便ごとの停留所を見てください。"
   );
   return item;
 }
