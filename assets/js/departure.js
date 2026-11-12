@@ -170,11 +170,11 @@ function renderNotice(now){
   const isPreview=Boolean(effective&&current<effective);
 
   const normalText=direction==="K2S"
-    ?"正門を出る目安です。停留所の時刻から、のりばまでの徒歩を引いています。　Estimated time to leave the gate, after walking."
-    :"時刻表の発車時刻です。遅れや今の位置は分かりません。　Timetable times only. Delays are not shown.";
+    ?"正門を出発する目安です。各停留所の時刻から、停留所までの徒歩時間を差し引いています。　Estimated departure from the main gate, with walking time subtracted."
+    :"時刻表の発車時刻を表示しています。遅延や運行位置は反映していません。　Timetable departure times. Delays and live positions are not shown.";
 
   const text=(isPreview
-    ?"プレビューです。"+formatRevision(effective)+"の時刻表です。　Preview timetable from "+formatRevisionEnglish(effective)+"."
+    ?"プレビュー中です。"+formatRevision(effective)+"の時刻表を表示しています。　Preview of the timetable revised "+formatRevisionEnglish(effective)+"."
     :normalText)+"　"+SOURCE_NOTICE;
 
   noticeTrack.classList.toggle("preview",isPreview);
