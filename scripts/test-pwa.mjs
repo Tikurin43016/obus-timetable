@@ -88,7 +88,7 @@ test("offline navigation returns immediately and preserves migration query",asyn
   assert.equal(h.request("/obus_2026_kosen.json",{headers:{Range:"bytes=0-9"}}),undefined);
 });
 test("versioned assets are cache-first, unversioned assets revalidate",async()=>{
-  const h=harness(),versioned="/assets/js/pwa.js?v=20261126-swr",unversioned="/assets/css/site.css";
+  const h=harness(),versioned="/assets/js/pwa.js?v=20261126-install",unversioned="/assets/css/site.css";
   h.store.set(versioned,new Response("old js",{headers:{"Content-Type":"text/javascript"}}));
   h.store.set(unversioned,new Response("old css",{headers:{"Content-Type":"text/css"}}));
   let count=0;
@@ -145,4 +145,57 @@ test("stalled cache-miss body is aborted after headers have been delivered",asyn
   await assert.rejects(response.text(),/aborted/);
   await request.background;
   assert.equal(h.store.has(key),false);
+});
+
+function installHarness({standalone=false}={}){
+  const listeners={},buttonEvents={},alerts=[];
+  const button={hidden:true,disabled:false,addEventListener:(name,fn)=>{buttonEvents[name]=fn;}};
+  const window={matchMedia:()=>({matches:standalone}),addEventListener:(name,fn)=>{listeners[name]=fn;},alert:message=>alerts.push(message)};
+  const document={getElementById:()=>button};
+  runInNewContext(read("assets/js/pwa.js"),{window,document,navigator:{onLine:true},console});
+  function offer(event){
+    listeners.beforeinstallprompt({preventDefault(){},...event});
+  }
+  return {button,alerts,offer,click:()=>buttonEvents.click(),installed:()=>listeners.appinstalled()};
+}
+test("install button stays in place during prompt and after dismissal",async()=>{
+  const h=installHarness();
+  let finish,calls=0;
+  h.offer({prompt:async()=>{calls++;},userChoice:new Promise(resolve=>{finish=resolve;})});
+  assert.equal(h.button.hidden,false);
+  const pending=h.click();
+  assert.equal(h.button.hidden,false);
+  assert.equal(h.button.disabled,true);
+  await h.click();
+  assert.equal(calls,1);
+  finish({outcome:"dismissed"});
+  await pending;
+  assert.equal(h.button.hidden,false);
+  assert.equal(h.button.disabled,false);
+  await h.click();
+  assert.equal(h.alerts.length,1);
+  h.offer({prompt:async()=>{calls++;},userChoice:Promise.resolve({outcome:"dismissed"})});
+  await h.click();
+  assert.equal(calls,2);
+});
+test("install button hides only after appinstalled and stays hidden in standalone",async()=>{
+  const h=installHarness();
+  let finish;
+  h.offer({prompt:async()=>{},userChoice:new Promise(resolve=>{finish=resolve;})});
+  const pending=h.click();
+  finish({outcome:"accepted"});
+  await pending;
+  assert.equal(h.button.hidden,false);
+  h.installed();
+  assert.equal(h.button.hidden,true);
+  const app=installHarness({standalone:true});
+  app.offer({prompt:async()=>{},userChoice:Promise.resolve({outcome:"accepted"})});
+  assert.equal(app.button.hidden,true);
+});
+test("install prompt errors restore the button",async()=>{
+  const h=installHarness();
+  h.offer({prompt:async()=>{throw Error("unavailable");}});
+  await h.click();
+  assert.equal(h.button.hidden,false);
+  assert.equal(h.button.disabled,false);
 });

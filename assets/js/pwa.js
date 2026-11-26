@@ -22,21 +22,40 @@
   refreshNotice();
 
   const button=document.getElementById("pwa-install");
-  let prompt=null;
+  let prompt=null,prompting=false;
+  let installed=window.matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
   if(button){
     window.addEventListener("beforeinstallprompt",event=>{
       event.preventDefault();
+      if(installed)return;
       prompt=event;
       button.hidden=false;
     });
     button.addEventListener("click",async()=>{
-      if(!prompt)return;
+      if(installed||prompting)return;
+      if(!prompt){
+        // A dismissed beforeinstallprompt event is single-use.
+        window.alert("ブラウザのメニューから「アプリをインストール」または「ホーム画面に追加」を選んでください。");
+        return;
+      }
       const event=prompt;
       prompt=null;
-      button.hidden=true;
-      try{await event.prompt();await event.userChoice;}catch(error){console.warn("Install prompt:",error);}
+      prompting=true;
+      button.disabled=true;
+      try{
+        await event.prompt();
+        await event.userChoice;
+      }catch(error){console.warn("Install prompt:",error);}
+      finally{
+        prompting=false;
+        button.disabled=false;
+      }
     });
-    window.addEventListener("appinstalled",()=>{prompt=null;button.hidden=true;});
+    window.addEventListener("appinstalled",()=>{
+      installed=true;
+      prompt=null;
+      button.hidden=true;
+    });
   }
   if("serviceWorker" in navigator){
     navigator.serviceWorker.register("/sw.js",{scope:"/",updateViaCache:"none"})

@@ -1,9 +1,9 @@
 "use strict";
 // Serve cached pages and timetable data immediately; refresh in the background.
 const PREFIX="nitocbus-pwa-";
-const CACHE=PREFIX+"v3-20261126-swr";
+const CACHE=PREFIX+"v4-20261126-install";
 const PAGES=new Set(["/","/obus_2026_kosen_s2k","/obus_2026_kosen_k2s","/departure/","/departure/k2s/","/watch/"]);
-const ASSETS=new Set(["/assets/favicon.svg","/assets/icons/icon-180.png","/assets/icons/icon-192.png","/assets/icons/icon-512.png","/manifest.webmanifest","/obus_2026_kosen.json","/assets/css/pwa.css?v=20261126-pwa","/assets/js/pwa.js?v=20261126-swr","/assets/css/site.css","/assets/css/migration-notice.css","/assets/js/migration-notice.js","/assets/css/timetable.css?v=20260929-1705","/assets/js/timetable.js?v=20261126-pwa","/assets/css/departure.css?v=20261007-security","/assets/js/departure.js?v=20261126-pwa","/assets/css/watch.css?v=20261007-dot-center","/assets/js/watch.js?v=20261126-pwa"]);
+const ASSETS=new Set(["/assets/favicon.svg","/assets/icons/icon-180.png","/assets/icons/icon-192.png","/assets/icons/icon-512.png","/manifest.webmanifest","/obus_2026_kosen.json","/assets/css/pwa.css?v=20261126-pwa","/assets/js/pwa.js?v=20261126-install","/assets/css/site.css","/assets/css/migration-notice.css","/assets/js/migration-notice.js","/assets/css/timetable.css?v=20260929-1705","/assets/js/timetable.js?v=20261126-pwa","/assets/css/departure.css?v=20261007-security","/assets/js/departure.js?v=20261126-pwa","/assets/css/watch.css?v=20261007-dot-center","/assets/js/watch.js?v=20261126-pwa"]);
 const DATA="/obus_2026_kosen.json";
 const ASSET_PATHS=new Set([...ASSETS].map(path=>path.split("?")[0]));
 const PRECACHE=[...PAGES,...ASSETS];
