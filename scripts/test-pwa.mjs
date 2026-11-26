@@ -26,12 +26,16 @@ test("manifest and page entry points",()=>{
     }
   }
 });
-function harness(){
+function harness({timeoutMs, beforePut=async()=>{}}={}){
   const listeners={},store=new Map();
   let network=async()=>new Response("fresh",{headers:{"Content-Type":"application/json"}});
-  const cache={put:async(key,value)=>{store.set(key,value);},match:async key=>store.get(key)?.clone(),addAll:async()=>{}};
+  const cache={put:async(key,value)=>{
+    const bytes=await value.arrayBuffer();
+    await beforePut();
+    store.set(key,new Response(bytes,{status:value.status,headers:value.headers}));
+  },match:async key=>store.get(key)?.clone(),addAll:async()=>{}};
   const self={location:{origin},clients:{claim:async()=>{}},addEventListener:(name,handler)=>{listeners[name]=handler;}};
-  runInNewContext(source,{self,caches:{open:async()=>cache,keys:async()=>[],delete:async()=>true},URL,Request,Response,Headers,AbortController,setTimeout,clearTimeout,console,fetch:(...args)=>network(...args)});
+  runInNewContext(source,{self,caches:{open:async()=>cache,keys:async()=>[],delete:async()=>true},URL,Request,Response,Headers,AbortController,setTimeout:(fn,ms)=>setTimeout(fn,timeoutMs??ms),clearTimeout,console,fetch:(...args)=>network(...args)});
   function request(path,{mode="cors",method="GET",headers={}}={}){
     let promise,background;
     listeners.fetch({request:{url:new URL(path,origin).href,mode,method,headers:new Headers(headers)},respondWith:value=>{promise=value;},waitUntil:value=>{background=value;}});
@@ -98,4 +102,47 @@ test("versioned assets are cache-first, unversioned assets revalidate",async()=>
   await b.background;
   assert.equal(count,1);
   assert.equal(await h.store.get(unversioned).clone().text(),"new css");
+});
+test("cache miss response does not wait for cache.put",async()=>{
+  let release;
+  const h=harness({beforePut:()=>new Promise(resolve=>{release=resolve;})});
+  const request=h.request("/obus_2026_kosen.json");
+  assert.equal(await (await request.response).text(),"fresh");
+  // A real cache write may still be outstanding when the page reads the body.
+  while(!release)await new Promise(resolve=>setImmediate(resolve));
+  release();
+  await request.background;
+  assert.equal(await h.store.get("/obus_2026_kosen.json").text(),"fresh");
+});
+test("stalled background body is aborted and last good cache survives",async()=>{
+  const h=harness({timeoutMs:30}),key="/obus_2026_kosen.json";
+  h.store.set(key,new Response("old",{headers:{"Content-Type":"application/json"}}));
+  let aborted=false;
+  h.setNetwork(async (_request,{signal})=>new Response(new ReadableStream({
+    start(controller){
+      signal.addEventListener("abort",()=>{
+        aborted=true;
+        controller.error(new Error("aborted"));
+      },{once:true});
+    }
+  }),{headers:{"Content-Type":"application/json"}}));
+  const request=h.request(key);
+  assert.equal(await (await request.response).text(),"old");
+  await request.background;
+  assert.equal(aborted,true);
+  assert.equal(await h.store.get(key).text(),"old");
+});
+test("stalled cache-miss body is aborted after headers have been delivered",async()=>{
+  const h=harness({timeoutMs:30}),key="/obus_2026_kosen.json";
+  h.setNetwork(async (_request,{signal})=>new Response(new ReadableStream({
+    start(controller){
+      signal.addEventListener("abort",()=>controller.error(new Error("aborted")),{once:true});
+    }
+  }),{headers:{"Content-Type":"application/json"}}));
+  const request=h.request(key);
+  const response=await request.response;
+  assert.equal(response.status,200);
+  await assert.rejects(response.text(),/aborted/);
+  await request.background;
+  assert.equal(h.store.has(key),false);
 });
