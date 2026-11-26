@@ -120,12 +120,14 @@ async function loadData({silent=false}={}){
       if(!response.ok)throw Error('HTTP '+response.status);
       const loaded=await response.json();
       if(!Array.isArray(loaded.S2K)||!Array.isArray(loaded.K2S)||!loaded.calendars||!loaded.routes||!loaded.stops)throw Error('Invalid timetable');
+      window.NitocPwa?.setDataCached(response.headers.get('X-NITOC-Cached')==='1');
       for(const key of ['S2K','K2S'])loaded[key].sort((a,b)=>minutes(a.display_time)-minutes(b.display_time));
       data=loaded;lastRender='';
       document.querySelector('#revision').textContent=data.effective_from.replace(/^(\d+)-(\d+)-(\d+)$/,(_,y,m,d)=>y+'年'+Number(m)+'月'+Number(d)+'日改正');
       startTimer();
     }catch(error){
       console.error(error);
+      if(data)window.NitocPwa?.setDataCached(true);
       if(!data){
         const retry=element('button','','再読み込み');retry.type='button';retry.addEventListener('click',()=>loadData());
         roots.next.replaceChildren(element('p','message','時刻を読み込めませんでした'),retry);
