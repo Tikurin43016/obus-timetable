@@ -1,9 +1,8 @@
 (()=>{
   "use strict";
-  const cachedPage=document.body.hasAttribute("data-pwa-cached");
-  let cachedData=false,notice;
+  let dataUnavailable=false,notice;
   function refreshNotice(){
-    const show=cachedPage||cachedData||!navigator.onLine;
+    const show=dataUnavailable||!navigator.onLine;
     if(!show&&!notice)return;
     if(!notice){
       notice=document.createElement("p");
@@ -14,10 +13,10 @@
       else (document.querySelector("main")||document.body).prepend(notice);
     }
     notice.hidden=!show;
-    const message=cachedPage||cachedData?"保存済みの情報を表示中。最新情報は通信復旧後に確認してください。":"オフライン：最新情報を確認できません。";
+    const message=!navigator.onLine?"オフライン：保存済みの時刻表":"時刻表の更新を確認できません。";
     if(notice.textContent!==(show?message:""))notice.textContent=show?message:"";
   }
-  window.NitocPwa={setDataCached(value){cachedData=Boolean(value);refreshNotice();}};
+  window.NitocPwa={setDataCached(value){dataUnavailable=Boolean(value);refreshNotice();}};
   window.addEventListener("offline",refreshNotice);
   window.addEventListener("online",refreshNotice);
   refreshNotice();

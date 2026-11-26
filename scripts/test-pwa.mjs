@@ -33,30 +33,69 @@ function harness(){
   const self={location:{origin},clients:{claim:async()=>{}},addEventListener:(name,handler)=>{listeners[name]=handler;}};
   runInNewContext(source,{self,caches:{open:async()=>cache,keys:async()=>[],delete:async()=>true},URL,Request,Response,Headers,AbortController,setTimeout,clearTimeout,console,fetch:(...args)=>network(...args)});
   function request(path,{mode="cors",method="GET",headers={}}={}){
-    let promise;
-    listeners.fetch({request:{url:new URL(path,origin).href,mode,method,headers:new Headers(headers)},respondWith:value=>{promise=value;}});
-    return promise;
+    let promise,background;
+    listeners.fetch({request:{url:new URL(path,origin).href,mode,method,headers:new Headers(headers)},respondWith:value=>{promise=value;},waitUntil:value=>{background=value;}});
+    return promise?{response:promise,background}:undefined;
   }
   return {store,request,setNetwork:fn=>{network=fn;}};
 }
-test("fresh JSON supersedes cache; outage is labelled; 404 is not hidden",async()=>{
+test("cached JSON returns before network finishes and updates next read",async()=>{
   const h=harness(),key="/obus_2026_kosen.json";
   h.store.set(key,new Response("old",{headers:{"Content-Type":"application/json"}}));
-  assert.equal(await (await h.request(key)).text(),"fresh");
+  let release;
+  h.setNetwork(()=>new Promise(resolve=>{release=resolve;}));
+  const first=h.request(key);
+  assert.equal(await (await first.response).text(),"old");
+  // Background fetch is deliberately unresolved while the cached response is read.
+  release(new Response("new",{headers:{"Content-Type":"application/json"}}));
+  await first.background;
   h.setNetwork(async()=>{throw Error("offline");});
-  const cached=await h.request(key);
-  assert.equal(cached.headers.get("X-NITOC-Cached"),"1");
-  assert.equal(await cached.text(),"fresh");
-  h.setNetwork(async()=>new Response("missing",{status:404}));
-  assert.equal((await h.request(key)).status,404);
+  const second=h.request(key);
+  assert.equal(await (await second.response).text(),"new");
+  await second.background;
 });
-test("offline navigation is labelled; migration query remains on network request",async()=>{
+test("failed or invalid updates preserve cache; cache miss returns network status",async()=>{
+  const h=harness(),key="/obus_2026_kosen.json";
+  h.store.set(key,new Response("old",{headers:{"Content-Type":"application/json"}}));
+  for(const response of [new Response("missing",{status:404}),new Response("unavailable",{status:503}),new Response("<html>wrong</html>",{headers:{"Content-Type":"text/html"}})]){
+    h.setNetwork(async()=>response);
+    const request=h.request(key);
+    assert.equal(await (await request.response).text(),"old");
+    await request.background;
+    assert.equal(await h.store.get(key).clone().text(),"old");
+  }
+  h.store.delete(key);
+  h.setNetwork(async()=>new Response("missing",{status:404}));
+  const request=h.request(key);
+  assert.equal((await request.response).status,404);
+  await request.background;
+});
+test("offline navigation returns immediately and preserves migration query",async()=>{
   const h=harness();
   h.store.set("/",new Response("<html><body><main>old</main></body></html>",{headers:{"Content-Type":"text/html"}}));
-  h.setNetwork(async req=>{assert.match(req.url,/moved=obuskosen/);return new Response("unavailable",{status:503});});
-  const cached=await h.request("/?moved=obuskosen",{mode:"navigate"});
-  assert.match(await cached.text(),/<body data-pwa-cached>/);
+  let seen;
+  h.setNetwork(async req=>{seen=req.url;return new Response("unavailable",{status:503});});
+  const cached=h.request("/?moved=obuskosen",{mode:"navigate"});
+  assert.match(await (await cached.response).text(),/<main>old<\/main>/);
+  await cached.background;
+  assert.match(seen,/moved=obuskosen/);
   assert.equal(h.request("/unknown",{mode:"navigate"}),undefined);
   assert.equal(h.request("/obus_2026_kosen_s2k.pdf",{mode:"navigate"}),undefined);
   assert.equal(h.request("/obus_2026_kosen.json",{headers:{Range:"bytes=0-9"}}),undefined);
+});
+test("versioned assets are cache-first, unversioned assets revalidate",async()=>{
+  const h=harness(),versioned="/assets/js/pwa.js?v=20261126-swr",unversioned="/assets/css/site.css";
+  h.store.set(versioned,new Response("old js",{headers:{"Content-Type":"text/javascript"}}));
+  h.store.set(unversioned,new Response("old css",{headers:{"Content-Type":"text/css"}}));
+  let count=0;
+  h.setNetwork(async()=>{count++;return new Response("new css",{headers:{"Content-Type":"text/css"}});});
+  const a=h.request(versioned);
+  assert.equal(await (await a.response).text(),"old js");
+  await a.background;
+  assert.equal(count,0);
+  const b=h.request(unversioned);
+  assert.equal(await (await b.response).text(),"old css");
+  await b.background;
+  assert.equal(count,1);
+  assert.equal(await h.store.get(unversioned).clone().text(),"new css");
 });

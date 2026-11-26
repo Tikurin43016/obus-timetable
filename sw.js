@@ -1,9 +1,9 @@
 "use strict";
-// Network-first: cached timetables are only a fallback.
+// Serve cached pages and timetable data immediately; refresh in the background.
 const PREFIX="nitocbus-pwa-";
-const CACHE=PREFIX+"v1-20261126-pwa";
+const CACHE=PREFIX+"v2-20261126-swr";
 const PAGES=new Set(["/","/obus_2026_kosen_s2k","/obus_2026_kosen_k2s","/departure/","/departure/k2s/","/watch/"]);
-const ASSETS=new Set(["/assets/favicon.svg","/assets/icons/icon-180.png","/assets/icons/icon-192.png","/assets/icons/icon-512.png","/manifest.webmanifest","/obus_2026_kosen.json","/assets/css/pwa.css?v=20261126-pwa","/assets/js/pwa.js?v=20261126-pwa","/assets/css/site.css","/assets/css/migration-notice.css","/assets/js/migration-notice.js","/assets/css/timetable.css?v=20260929-1705","/assets/js/timetable.js?v=20261126-pwa","/assets/css/departure.css?v=20261007-security","/assets/js/departure.js?v=20261126-pwa","/assets/css/watch.css?v=20261007-dot-center","/assets/js/watch.js?v=20261126-pwa"]);
+const ASSETS=new Set(["/assets/favicon.svg","/assets/icons/icon-180.png","/assets/icons/icon-192.png","/assets/icons/icon-512.png","/manifest.webmanifest","/obus_2026_kosen.json","/assets/css/pwa.css?v=20261126-pwa","/assets/js/pwa.js?v=20261126-swr","/assets/css/site.css","/assets/css/migration-notice.css","/assets/js/migration-notice.js","/assets/css/timetable.css?v=20260929-1705","/assets/js/timetable.js?v=20261126-pwa","/assets/css/departure.css?v=20261007-security","/assets/js/departure.js?v=20261126-pwa","/assets/css/watch.css?v=20261007-dot-center","/assets/js/watch.js?v=20261126-pwa"]);
 const DATA="/obus_2026_kosen.json";
 const ASSET_PATHS=new Set([...ASSETS].map(path=>path.split("?")[0]));
 const PRECACHE=[...PAGES,...ASSETS];
@@ -51,38 +51,35 @@ async function fetchFresh(request){
   finally{clearTimeout(timer);}
 }
 
-async function fallbackResponse(response,key){
-  if(!PAGES.has(key)&&key!==DATA)return response;
-  const headers=new Headers(response.headers);
-  headers.set("X-NITOC-Cached","1");
-  headers.delete("Content-Length");
-  headers.delete("Content-Encoding");
-  headers.delete("ETag");
-  if(PAGES.has(key)){
-    const html=(await response.text()).replace(/<body(?=[\s>])/i,"<body data-pwa-cached");
-    return new Response(html,{status:200,headers});
-  }
-  return new Response(response.body,{status:200,headers});
+// Versioned assets and app icons are immutable for the lifetime of this cache.
+// Unversioned CSS/JS also revalidate so edits need not wait for a worker release.
+function cacheFirst(key){
+  return key.startsWith("/assets/")&&(key.includes("?v=")||key.startsWith("/assets/icons/"));
 }
 
-async function networkFirst(request,key){
+async function readCached(key){
+  try{return await (await caches.open(CACHE)).match(key);}
+  catch(error){console.warn("Cache read:",error);return undefined;}
+}
+
+async function refresh(request,key){
   let response;
-  try{response=await fetchFresh(request);}catch{}
-  if(response&&response.status<500){
-    if(validResponse(response,key)){
-      try{const cache=await caches.open(CACHE);await cache.put(key,response.clone());}catch(error){console.warn("Cache write:",error);}
-    }
-    return response;
+  try{response=await fetchFresh(request);}
+  catch{return undefined;}
+  if(validResponse(response,key)){
+    try{await (await caches.open(CACHE)).put(key,response.clone());}
+    catch(error){console.warn("Cache write:",error);}
   }
-  try{
-    const cache=await caches.open(CACHE);
-    const cached=await cache.match(key);
-    if(cached)return await fallbackResponse(cached,key);
-  }catch(error){console.warn("Cache read:",error);}
-  return response||Response.error();
+  // A failed background update never replaces the last good response.
+  return response;
 }
 
 self.addEventListener("fetch",event=>{
   const key=cacheKey(event.request);
-  if(key!==null)event.respondWith(networkFirst(event.request,key));
+  if(key===null)return;
+  const cached=readCached(key);
+  const update=cached.then(response=>response&&cacheFirst(key)?undefined:refresh(event.request,key));
+  // Keep the worker alive until the background update has been stored.
+  event.waitUntil(update.then(()=>undefined).catch(error=>console.warn("Cache refresh:",error)));
+  event.respondWith(cached.then(async response=>response||await update||Response.error()));
 });
