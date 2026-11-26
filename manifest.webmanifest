@@ -1,0 +1,40 @@
+{
+  "id": "/",
+  "name": "NITOCバスナビ",
+  "short_name": "バスナビ",
+  "description": "小山駅東口と小山高専を結ぶバスの時刻表・発車標（非公式）",
+  "lang": "ja",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#171a67",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "駅 → 高専",
+      "url": "/obus_2026_kosen_s2k"
+    },
+    {
+      "name": "高専 → 駅",
+      "url": "/obus_2026_kosen_k2s"
+    },
+    {
+      "name": "発車標",
+      "url": "/departure/"
+    }
+  ]
+}

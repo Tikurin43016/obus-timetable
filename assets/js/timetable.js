@@ -32,7 +32,9 @@ async function loadData(){
   try{
     const response=await fetch(DATA_URL,{cache:"no-store",signal:controller.signal});
     if(!response.ok) throw new Error(String(response.status));
-    return await response.json();
+    const loaded=await response.json();
+    window.NitocPwa?.setDataCached(response.headers.get("X-NITOC-Cached")==="1");
+    return loaded;
   }finally{
     clearTimeout(timeout);
   }
